@@ -71,6 +71,7 @@ include '../include/menuChoice.php';
             if(isset($_GET['materie']) && count($_GET['materie']) > 0) {
                 $inQuery = implode(',', array_fill(0, count($_GET['materie']), '?'));
                 $sql .= " AND pm.idMateria IN ($inQuery)";
+                $params = array_merge($params, $_GET['materie']);
             }
 
             if(isset($_GET['budget']) && $_GET['budget'] !== '') {
