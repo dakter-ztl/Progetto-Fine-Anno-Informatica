@@ -1,0 +1,26 @@
+{
+    "name": "Next Step Config",
+    "userpages": [
+        "home.php", 
+        "loginForm.php",
+        "registrazioneForm.php"
+    ],
+    "adminpages": [],
+    "loggedInPages": [
+        "bacheca.php",
+        "chat.php",
+        "messaggi.php",
+        "profilo.php",
+        "profilo_pubblico.php"
+    ],
+    "DBPages": [
+        "home.php", 
+        "bacheca.php", 
+        "login.php", 
+        "registrazione.php",
+        "chat.php",
+        "messaggi.php",
+        "profilo.php",
+        "profilo_pubblico.php"
+    ]
+}   
