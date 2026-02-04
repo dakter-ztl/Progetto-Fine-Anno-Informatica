@@ -3,7 +3,7 @@ session_start();
 require_once('DBHandler.php');
 
 $nome = htmlspecialchars($_POST['nome']);
-$pass = password_hash($_POST['password'], PASSWORD_DEFAULT); // Criptiamo la password!
+$pass = password_hash($_POST['password'], PASSWORD_DEFAULT); 
 $diploma = htmlspecialchars($_POST['tipoDiploma']);
 $ruolo = htmlspecialchars($_POST['ruolo']);
 

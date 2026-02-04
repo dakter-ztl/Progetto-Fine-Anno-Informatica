@@ -9,9 +9,7 @@ $myId = $_SESSION['userId'];
 
     <div class="list-group">
         <?php
-        // QUESTA QUERY È IL CUORE DEL SISTEMA
-        // Cerca tutti gli utenti con cui hai scambiato almeno un messaggio (inviato o ricevuto)
-        // La UNION serve a unire chi ti ha scritto e chi hai scritto tu
+       
         $sql = "SELECT DISTINCT u.idUtente, u.nome, u.ruolo 
                 FROM utenti u
                 WHERE u.idUtente IN (
@@ -26,8 +24,7 @@ $myId = $_SESSION['userId'];
 
         if(count($conversazioni) > 0) {
             foreach($conversazioni as $chat) {
-                // Per ogni persona trovata, contiamo quanti messaggi ci sono
-                // (Opzionale: potresti anche mostrare l'ultimo messaggio, ma teniamolo semplice)
+                
                 echo '
                 <a href="chat.php?partner=' . $chat['idUtente'] . '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                     <div>

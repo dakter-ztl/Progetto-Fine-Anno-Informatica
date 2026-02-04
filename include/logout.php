@@ -1,7 +1,7 @@
 <?php
     session_start();
-    $_SESSION = array(); // Svuota le variabili di sessione
-    session_destroy();   // Distrugge la sessione
-    header('Location: ../userpages/home.php'); // Torna alla home
+    $_SESSION = array(); 
+    session_destroy();   
+    header('Location: ../userpages/home.php'); 
     exit();
 ?>

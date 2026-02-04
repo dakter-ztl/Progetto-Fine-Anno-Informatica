@@ -13,10 +13,8 @@ include '../include/menuChoice.php';
                 <label class="form-label fw-bold">Quali materie ti piacciono? (Seleziona almeno una)</label>
                 <div class="row">
                     <?php
-                    // Recupera le materie dal DB per creare le checkbox
                     $stmtM = DBHandler::getPDO()->query("SELECT * FROM materie");
                     while($materia = $stmtM->fetch()) {
-                        // Controlliamo se era già selezionata (per non perdere la spunta dopo la ricerca)
                         $checked = (isset($_GET['materie']) && in_array($materia['idMateria'], $_GET['materie'])) ? 'checked' : '';
                         
                         echo '<div class="col-md-4 col-6 mb-2">
@@ -56,40 +54,25 @@ include '../include/menuChoice.php';
 
     <div class="row mt-4">
         <?php
-        // Avvia la ricerca solo se ho premuto il tasto (o se c'è qualcosa nell'URL)
         if(count($_GET) > 0) { 
             
-            // Query Base: DISTINCT serve per non mostrare lo stesso corso 2 volte se piace sia Mate che Fisica
             $sql = "SELECT DISTINCT p.*, c.nomeCategoria 
                     FROM percorsi p 
                     JOIN categorie c ON p.idCategoria = c.idCategoria ";
             
-            // SE HO SELEZIONATO MATERIE, DEVO UNIRE LA TABELLA DI COLLEGAMENTO
             if(isset($_GET['materie']) && count($_GET['materie']) > 0) {
                 $sql .= " JOIN percorsi_materie pm ON p.idPercorso = pm.idPercorso ";
             }
 
-            $sql .= " WHERE 1=1"; // Trucco per concatenare gli AND
+            $sql .= " WHERE 1=1";
             
             $params = [];
 
-            // 1. FILTRO MATERIE (Cuore del consiglio)
             if(isset($_GET['materie']) && count($_GET['materie']) > 0) {
-                // Crea una stringa di punti interrogativi tipo (?,?,?) in base a quante materie ho scelto
                 $inQuery = implode(',', array_fill(0, count($_GET['materie']), '?'));
-                
                 $sql .= " AND pm.idMateria IN ($inQuery)";
-                
-                // Aggiungiamo i valori dei parametri all'array $params
-                foreach($_GET['materie'] as $idMat) {
-                    $params[] = $idMat;
-                }
             }
 
-            // 2. ALTRI FILTRI (Usiamo parametri nominati qui è un casino misto con posizionali, 
-            // quindi per sicurezza usiamo bindValue posizionale per tutto o dobbiamo stare attenti.
-            // SOLUZIONE PROF STYLE: Costruiamo tutto posizionale (?) per evitare conflitti.
-            
             if(isset($_GET['budget']) && $_GET['budget'] !== '') {
                 $sql .= " AND p.costoMedioMensile <= ?";
                 $params[] = $_GET['budget'];
@@ -120,7 +103,6 @@ include '../include/menuChoice.php';
                             $prezzoText = "€" . $corso['costoMedioMensile'] . " /mese";
                         }
 
-                        // Recuperiamo le materie di QUESTO singolo corso per mostrarle nella card
                         $stmtMat = DBHandler::getPDO()->prepare("
                             SELECT m.nomeMateria FROM materie m 
                             JOIN percorsi_materie pm ON m.idMateria = pm.idMateria 

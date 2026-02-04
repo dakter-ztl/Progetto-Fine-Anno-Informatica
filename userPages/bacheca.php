@@ -1,17 +1,13 @@
 <?php
 include '../include/menuChoice.php';
 
-// Verifica se l'utente loggato è ADMIN
 $isAdmin = (isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 'admin');
 $myId = $_SESSION['userId'];
 
-// --- 1. LOGICA CANCELLAZIONE (POST o RISPOSTA) ---
 if(isset($_POST['delete_type'])) {
     $idToDelete = $_POST['delete_id'];
     
-    // Query diversa a seconda di cosa cancelliamo
     if($_POST['delete_type'] == 'annuncio') {
-        // Cancella se l'utente è l'autore (idUtente = :me) OPPURE se è admin (:admin = 1)
         $sql = "DELETE FROM annunci WHERE idAnnuncio = :id AND (idUtente = :me OR :admin = 1)";
     } else {
         $sql = "DELETE FROM risposte WHERE idRisposta = :id AND (idUtente = :me OR :admin = 1)";
@@ -28,7 +24,6 @@ if(isset($_POST['delete_type'])) {
     exit;
 }
 
-// --- 2. LOGICA NUOVO ANNUNCIO ---
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'nuovo_annuncio') {
     $sql = "INSERT INTO annunci (titolo, testo, idUtente) VALUES (:tit, :test, :uid)";
     $stmt = DBHandler::getPDO()->prepare($sql);
@@ -41,13 +36,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['az
     exit;
 }
 
-// --- 3. LOGICA RISPOSTA + NOTIFICA ---
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'risposta_pubblica') {
     $idAnnuncio = $_POST['id_annuncio'];
-    $autoreAnnuncioId = $_POST['id_autore_annuncio']; // Chi ha scritto il post originale
+    $autoreAnnuncioId = $_POST['id_autore_annuncio'];
     $testoRisp = $_POST['testo_risposta'];
 
-    // A. Inserisci la risposta
     $sql = "INSERT INTO risposte (testo, idAnnuncio, idUtente) VALUES (:testo, :idAnn, :uid)";
     $stmt = DBHandler::getPDO()->prepare($sql);
     $stmt->execute([
@@ -56,7 +49,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['az
         ':uid' => $myId
     ]);
 
-    // B. Crea Notifica (Solo se non sto rispondendo a me stesso)
     if($autoreAnnuncioId != $myId) {
         $msgNotifica = $_SESSION['nome'] . " ha commentato il tuo post in bacheca.";
         
@@ -94,7 +86,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['az
     <h4 class="mb-4">📌 Discussioni Recenti</h4>
     
     <?php
-    // Query per prendere i post e i dati dell'autore
     $sql = "SELECT a.*, u.nome, u.ruolo, u.idUtente as idAutore 
             FROM annunci a 
             JOIN utenti u ON a.idUtente = u.idUtente 
@@ -104,7 +95,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['az
     $annunci = $sth->fetchAll();
 
     foreach($annunci as $annuncio): 
-        // Controllo se sono l'autore del post per permettere la cancellazione
         $isMioPost = ($annuncio['idAutore'] == $myId);
     ?>
         <div class="card mb-4 shadow border-0">
@@ -139,7 +129,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['az
                     <h6 class="text-muted mb-3">Risposte:</h6>
 
                     <?php
-                    // Query Risposte per questo annuncio
+                    
                     $sqlR = "SELECT r.*, u.nome, u.idUtente as idAutoreRisp FROM risposte r 
                              JOIN utenti u ON r.idUtente = u.idUtente 
                              WHERE idAnnuncio = :idA ORDER BY dataRisposta ASC";

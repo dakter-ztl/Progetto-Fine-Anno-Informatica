@@ -3,11 +3,9 @@ include '../include/menuChoice.php';
 
 $myId = $_SESSION['userId'];
 
-// LOGICA: CANCELLAZIONE NOTIFICA
 if(isset($_POST['delete_notifica'])) {
     $stmt = DBHandler::getPDO()->prepare("DELETE FROM notifiche WHERE idNotifica = :id AND idUtente = :me");
     $stmt->execute([':id' => $_POST['delete_notifica'], ':me' => $myId]);
-    // Refresh per togliere la notifica dalla vista
     header("Location: profilo.php");
     exit;
 }

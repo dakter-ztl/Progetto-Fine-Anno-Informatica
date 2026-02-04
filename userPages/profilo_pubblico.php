@@ -8,7 +8,7 @@ if(!isset($_GET['id'])) {
 
 $userId = $_GET['id'];
 
-// Recupera info utente
+
 $sql = "SELECT nome, ruolo, tipoDiploma, punteggioAffidabilita FROM utenti WHERE idUtente = :id";
 $stmt = DBHandler::getPDO()->prepare($sql);
 $stmt->execute([':id' => $userId]);
@@ -19,7 +19,7 @@ if(!$user) {
     exit;
 }
 
-// Colore diverso in base all'affidabilità
+
 $score = $user['punteggioAffidabilita'];
 $color = ($score > 50) ? 'text-success' : (($score > 20) ? 'text-warning' : 'text-danger');
 ?>

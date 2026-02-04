@@ -1,7 +1,6 @@
 <?php
 include '../include/menuChoice.php';
 
-// Se non è specificato con chi parlare, rimanda alla bacheca
 if(!isset($_GET['partner'])) {
     header("Location: bacheca.php");
     exit;
@@ -10,12 +9,10 @@ if(!isset($_GET['partner'])) {
 $partnerId = $_GET['partner'];
 $myId = $_SESSION['userId'];
 
-// Recupero nome del partner per mostrarlo in alto
 $stmt = DBHandler::getPDO()->prepare("SELECT nome FROM utenti WHERE idUtente = :pid");
 $stmt->execute([':pid' => $partnerId]);
 $partnerName = $stmt->fetchColumn();
 
-// --- INVIO MESSAGGIO ---
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['messaggio'])) {
     $sql = "INSERT INTO messaggi_privati (idMittente, idDestinatario, testo) VALUES (:mitt, :dest, :testo)";
     $stmt = DBHandler::getPDO()->prepare($sql);
@@ -24,7 +21,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['messaggio'])) {
         ':dest' => $partnerId,
         ':testo' => $_POST['messaggio']
     ]);
-    // Refresh per vedere il messaggio inviato
     header("Location: chat.php?partner=" . $partnerId);
     exit;
 }
@@ -40,7 +36,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['messaggio'])) {
         
         <div class="card-body" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;">
             <?php
-            // Seleziona messaggi scambiati tra ME e LUI (in entrambe le direzioni)
             $sql = "SELECT * FROM messaggi_privati 
                     WHERE (idMittente = :me AND idDestinatario = :lui) 
                        OR (idMittente = :lui AND idDestinatario = :me) 
@@ -52,7 +47,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['messaggio'])) {
 
             foreach($messaggi as $msg):
                 $isMio = ($msg['idMittente'] == $myId);
-                // Stile diverso se il messaggio è mio (Verde/Destra) o suo (Bianco/Sinistra)
                 $align = $isMio ? 'text-end' : 'text-start';
                 $bg = $isMio ? 'bg-success text-white' : 'bg-white border';
             ?>
