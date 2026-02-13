@@ -1,34 +1,66 @@
 <?php
+session_set_cookie_params([
+    'path' => '/',
+    'secure' => isset($_SERVER['HTTPS']),
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once '../include/DBHandler.php';
 include '../include/menuChoice.php';
+
+$dbConnection = DBHandler::getPDO(); 
 ?>
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - NextStep</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet"> 
+</head>
+<body class="bg-light">
 
 <div class="container mt-4">
     <div class="p-4 bg-white shadow-sm rounded">
         <h2 class="text-center mb-4">Trova il tuo Percorso 🔎</h2>
-        <p class="text-center text-muted">Dicci cosa ti piace studiare e ti diremo cosa fare!</p>
+        <p class="text-center text-muted">
+            Bentornato, <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Studente') ?></strong>! Dicci cosa ti piace studiare.
+        </p>
         
         <form action="home.php" method="GET">
-            
             <div class="mb-4">
-                <label class="form-label fw-bold">Quali materie ti piacciono? (Seleziona almeno una)</label>
-                <div class="row">
-                    <?php
-                    $stmtM = DBHandler::getPDO()->query("SELECT * FROM materie");
-                    while($materia = $stmtM->fetch()) {
-                        $checked = (isset($_GET['materie']) && in_array($materia['idMateria'], $_GET['materie'])) ? 'checked' : '';
-                        
-                        echo '<div class="col-md-4 col-6 mb-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="materie[]" value="'.$materia['idMateria'].'" id="m_'.$materia['idMateria'].'" '.$checked.'>
-                                    <label class="form-check-label" for="m_'.$materia['idMateria'].'">
-                                        '.$materia['nomeMateria'].'
-                                    </label>
-                                </div>
-                              </div>';
-                    }
-                    ?>
-                </div>
-            </div>
+               <label class="form-label fw-bold">Quali materie ti piacciono? (Seleziona almeno una)</label>
+<div class="scroll-container-materie">
+    <div class="grid-materie">
+        <?php
+        try {
+            $stmtM = $dbConnection->query("SELECT * FROM materie ORDER BY nomeMateria ASC");
+            while($materia = $stmtM->fetch()) {
+                $isChecked = (isset($_GET['materie']) && in_array($materia['idMateria'], $_GET['materie'])) ? 'checked' : '';
+                
+                echo '<div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="materie[]" value="'.$materia['idMateria'].'" id="m_'.$materia['idMateria'].'" '.$isChecked.'>
+                        <label class="form-check-label" for="m_'.$materia['idMateria'].'">
+                            '.htmlspecialchars($materia['nomeMateria']).'
+                        </label>
+                      </div>';
+            }
+        } catch (PDOException $e) { /* ... */ }
+        ?>
+    </div>
+</div>
 
             <hr>
 
@@ -54,63 +86,60 @@ include '../include/menuChoice.php';
 
     <div class="row mt-4">
         <?php
-        if(count($_GET) > 0) { 
+        if (isset($_GET['materie']) || isset($_GET['budget']) || isset($_GET['citta']) || isset($_GET['difficolta'])) { 
             
             $sql = "SELECT DISTINCT p.*, c.nomeCategoria 
                     FROM percorsi p 
                     JOIN categorie c ON p.idCategoria = c.idCategoria ";
             
-            if(isset($_GET['materie']) && count($_GET['materie']) > 0) {
+            if (isset($_GET['materie']) && count($_GET['materie']) > 0) {
                 $sql .= " JOIN percorsi_materie pm ON p.idPercorso = pm.idPercorso ";
             }
 
             $sql .= " WHERE 1=1";
-            
-            $params = [];
+            $queryParams = [];
 
-            if(isset($_GET['materie']) && count($_GET['materie']) > 0) {
+            if (isset($_GET['materie']) && count($_GET['materie']) > 0) {
                 $inQuery = implode(',', array_fill(0, count($_GET['materie']), '?'));
                 $sql .= " AND pm.idMateria IN ($inQuery)";
-                $params = array_merge($params, $_GET['materie']);
+                $queryParams = array_merge($queryParams, $_GET['materie']);
             }
 
-            if(isset($_GET['budget']) && $_GET['budget'] !== '') {
+            if (isset($_GET['budget']) && $_GET['budget'] !== '') {
                 $sql .= " AND p.costoMedioMensile <= ?";
-                $params[] = $_GET['budget'];
+                $queryParams[] = $_GET['budget'];
             }
 
-            if(isset($_GET['citta']) && $_GET['citta'] !== '') {
+            if (isset($_GET['citta']) && $_GET['citta'] !== '') {
                 $sql .= " AND p.citta LIKE ?";
-                $params[] = "%" . $_GET['citta'] . "%";
+                $queryParams[] = "%" . $_GET['citta'] . "%";
             }
 
-            if(isset($_GET['difficolta']) && $_GET['difficolta'] !== '') {
+            if (isset($_GET['difficolta']) && $_GET['difficolta'] !== '') {
                 $sql .= " AND p.difficolta = ?";
-                $params[] = $_GET['difficolta'];
+                $queryParams[] = $_GET['difficolta'];
             }
 
             try {
-                $sth = DBHandler::getPDO()->prepare($sql);
-                $sth->execute($params);
-                $risultati = $sth->fetchAll();
+                $sth = $dbConnection->prepare($sql);
+                $sth->execute($queryParams);
+                $risultatiPercorsi = $sth->fetchAll();
 
-                if(count($risultati) > 0) {
+                if (count($risultatiPercorsi) > 0) {
                     echo '<h4 class="mb-3 w-100">Ecco cosa ti consigliamo:</h4>';
-                    foreach($risultati as $corso) {
+                    foreach ($risultatiPercorsi as $corso) {
                         
-                        if ($corso['costoMedioMensile'] == 0) {
-                            $prezzoText = "<span class='text-success fw-bold'>GRATIS</span>";
-                        } else {
-                            $prezzoText = "€" . $corso['costoMedioMensile'] . " /mese";
-                        }
+                        $prezzoVisualizzato = ($corso['costoMedioMensile'] == 0) 
+                            ? "<span class='text-success fw-bold'>GRATIS</span>" 
+                            : "€" . number_format($corso['costoMedioMensile'], 2) . " /mese";
 
-                        $stmtMat = DBHandler::getPDO()->prepare("
+                        $stmtMat = $dbConnection->prepare("
                             SELECT m.nomeMateria FROM materie m 
                             JOIN percorsi_materie pm ON m.idMateria = pm.idMateria 
                             WHERE pm.idPercorso = ?");
                         $stmtMat->execute([$corso['idPercorso']]);
-                        $materieCorso = $stmtMat->fetchAll(PDO::FETCH_COLUMN);
-                        $materieString = implode(", ", $materieCorso);
+                        $materieDelCorso = $stmtMat->fetchAll(PDO::FETCH_COLUMN);
+                        $stringaMaterie = implode(", ", $materieDelCorso);
 
                         echo '
                         <div class="col-md-4 mb-4">
@@ -124,11 +153,11 @@ include '../include/menuChoice.php';
                                     <p class="card-text text-muted small">' . htmlspecialchars($corso['descrizione']) . '</p>
                                     
                                     <div class="mb-3">
-                                        <span class="badge bg-light text-dark border">📚 Materie: ' . $materieString . '</span>
+                                        <span class="badge bg-light text-dark border">📚 Materie: ' . htmlspecialchars($stringaMaterie) . '</span>
                                     </div>
 
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item px-0">💰 Costo: ' . $prezzoText . '</li>
+                                        <li class="list-group-item px-0">💰 Costo: ' . $prezzoVisualizzato . '</li>
                                         <li class="list-group-item px-0">📍 Città: ' . htmlspecialchars($corso['citta']) . '</li>
                                     </ul>
                                 </div>
@@ -144,12 +173,13 @@ include '../include/menuChoice.php';
                             <p>Prova a selezionare meno materie o togliere i filtri di budget/città.</p>
                           </div>';
                 }
-            } catch(PDOException $e) {
+            } catch (PDOException $e) {
                 echo '<div class="alert alert-danger">Errore Database: ' . $e->getMessage() . '</div>';
             }
         }
         ?>
     </div>
 </div>
+
 </body>
 </html>

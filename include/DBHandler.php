@@ -1,33 +1,30 @@
 <?php
 class DBHandler {
-    private static $pdo;
+    
+    private static $host = 'pronv6.ftp.tb-hosting.com'; 
+    private static $dbName = 'pronv6_zwjejm53'; 
+    private static $userName = 'pronv6_dakter';       
+    private static $password = 'ciscoX123'; 
 
-    private function __construct() {
-    }
+    private static $dbHandler = null;
 
     public static function getPDO(){
-        if(self::$pdo == null){
-            self::connect_database();
-        }
-        return self::$pdo;
-    }
+        if(self::$dbHandler == null){
+            try {
+                $dsn = "mysql:host=" . self::$host . ";dbname=" . self::$dbName . ";charset=utf8";
+                
+                $options = [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ];
 
-    private static function connect_database() {
-        define('USER', 'root');
-        define('PASSWORD', '');
-
-        try {
-            $connection_string = 'mysql:host=localhost;dbname=NextStep;charset=utf8';
-            $connection_array = array(
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-            );
-
-            self::$pdo = new PDO($connection_string, USER, PASSWORD, $connection_array);
+                self::$dbHandler = new PDO($dsn, self::$userName, self::$password, $options);
+                
+            } catch (PDOException $e) {
+                die("errore connessione: " . $e->getMessage()); 
+            }
         }
-        catch(PDOException $e) {
-            self::$pdo = null;
-        }
+        return self::$dbHandler;
     }
 }
-?>

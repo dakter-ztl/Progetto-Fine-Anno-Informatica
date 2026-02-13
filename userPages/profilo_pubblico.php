@@ -1,17 +1,17 @@
 <?php
 include '../include/menuChoice.php';
 
-if(!isset($_GET['id'])) {
+if(!isset($_GET['idUtente'])) {
     echo "Utente non specificato.";
     exit;
 }
 
-$userId = $_GET['id'];
+$userId = $_GET['idUtente'];
 
 
-$sql = "SELECT nome, ruolo, tipoDiploma, punteggioAffidabilita FROM utenti WHERE idUtente = :id";
+$sql = "SELECT nome, ruolo, tipoDiploma, punteggioAffidabilita FROM utenti WHERE idUtente = :idUtente";
 $stmt = DBHandler::getPDO()->prepare($sql);
-$stmt->execute([':id' => $userId]);
+$stmt->execute([':idUtente' => $userId]);
 $user = $stmt->fetch();
 
 if(!$user) {
@@ -28,7 +28,7 @@ $color = ($score > 50) ? 'text-success' : (($score > 20) ? 'text-warning' : 'tex
     <div class="card shadow mx-auto" style="max-width: 600px;">
         <div class="card-body text-center">
             <h1 class="display-4">👤</h1>
-            <h2 class="card-title"><?= htmlspecialchars($user['nome']) ?></h2>
+            <h2 class="card-title"><?= htmlspecialchars($user['nomeUtente']) ?></h2>
             
             <span class="badge bg-dark fs-6 mb-3"><?= strtoupper($user['ruolo']) ?></span>
             
@@ -45,7 +45,7 @@ $color = ($score > 50) ? 'text-success' : (($score > 20) ? 'text-warning' : 'tex
             </div>
 
             <div class="mt-4">
-                <?php if($userId != $_SESSION['userId']): ?>
+                <?php if($userId != $_SESSION['idUtente']): ?>
                     <a href="chat.php?partner=<?= $userId ?>" class="btn btn-primary w-100">💬 Invia Messaggio Privato</a>
                 <?php endif; ?>
                 <a href="bacheca.php" class="btn btn-outline-secondary w-100 mt-2">Torna alla Bacheca</a>

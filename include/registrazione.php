@@ -16,8 +16,6 @@ try {
         ':ruolo' => $ruolo,
         ':dip' => $diploma
     ]);
-    
-    // Se va bene, vai al login
     header('Location: loginForm.php?success=registrato');
 } catch (PDOException $e) {
     echo "Errore registrazione (forse il nome esiste già): " . $e->getMessage();

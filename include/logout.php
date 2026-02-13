@@ -2,6 +2,6 @@
     session_start();
     $_SESSION = array(); 
     session_destroy();   
-    header('Location: ../userpages/home.php'); 
+    header('Location: ../userPages/home.php'); 
     exit();
 ?>

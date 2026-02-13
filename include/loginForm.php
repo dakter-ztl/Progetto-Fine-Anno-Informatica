@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Login Next Step</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet">
     </head>
     <body class="bg-light">
         
@@ -42,7 +43,7 @@
                                 <a href="registrazioneForm.php" class="btn btn-outline-success w-100">Registrati qui</a>
                             </div>
                             <div class="mt-3 text-center">
-                                <a href="../userpages/home.php" class="text-decoration-none text-muted small">Torna alla Home</a>
+                                <a href="../userPages/home.php" class="text-decoration-none text-muted small">Torna alla Home</a>
                             </div>
                         </div>
                     </div>

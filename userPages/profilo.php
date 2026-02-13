@@ -1,7 +1,7 @@
 <?php
 include '../include/menuChoice.php';
 
-$myId = $_SESSION['userId'];
+$myId = $_SESSION['idUtente'];
 
 if(isset($_POST['delete_notifica'])) {
     $stmt = DBHandler::getPDO()->prepare("DELETE FROM notifiche WHERE idNotifica = :id AND idUtente = :me");
@@ -17,8 +17,8 @@ if(isset($_POST['delete_notifica'])) {
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
                     <div class="display-1 mb-2">👤</div>
-                    <h3 class="card-title"><?= htmlspecialchars($_SESSION['nome']) ?></h3>
-                    <span class="badge bg-primary mb-4 p-2"><?= strtoupper($_SESSION['ruolo']) ?></span>
+                    <h3 class="card-title"><?= htmlspecialchars($_SESSION['nomeUtente']) ?></h3>
+                    <span class="badge bg-primary mb-4 p-2"><?= strtoupper($_SESSION['ruoloUtente']) ?></span>
                     
                     <div class="d-grid gap-2">
                         <a href="messaggi.php" class="btn btn-info text-white">📩 Vai ai Messaggi Privati</a>

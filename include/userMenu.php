@@ -28,7 +28,7 @@
             session_start();
         }
         
-        if(isset($_SESSION['userId'])): ?>
+        if(isset($_SESSION['idUtente'])): ?>
             <li class="nav-item">
               <a class="nav-link text-warning fw-bold" href="profilo.php">👤 Il mio Profilo</a>
             </li>
@@ -43,8 +43,8 @@
       </ul>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-            <?php if(isset($_SESSION['userId'])): ?>
-                <span class="navbar-text me-3 text-white">Ciao, <?= htmlspecialchars($_SESSION['nome']); ?></span>
+            <?php if(isset($_SESSION['idUtente'])): ?>
+                <span class="navbar-text me-3 text-white">Ciao, <?= htmlspecialchars($_SESSION['nomeUtente']); ?></span>
                 <a class="btn btn-warning btn-sm" href="../include/logout.php">Logout</a>
             <?php else: ?>
                 <a class="btn btn-outline-light btn-sm" href="../include/loginForm.php">Accedi</a>
