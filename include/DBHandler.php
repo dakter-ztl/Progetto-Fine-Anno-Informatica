@@ -1,11 +1,10 @@
 <?php
 class DBHandler {
-    
-    private static $host = 'pronv6.ftp.tb-hosting.com'; 
-    private static $dbName = 'pronv6_zwjejm53'; 
-    private static $userName = 'pronv6_dakter';       
-    private static $password = 'ciscoX123'; 
 
+private static $host = 'pronv6.ftp.tb-hosting.com'; 
+private static $dbName = 'pronv6_zwjejm53'; 
+private static $userName = 'pronv6_dakter';       
+private static $password = 'ciscoX123'; 
     private static $dbHandler = null;
 
     public static function getPDO(){

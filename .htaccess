@@ -1,0 +1,3 @@
+<IF "%{REQUEST_URI} != 'C:/xampp/htdocs/Progetto-Fine-Anno-Informatica/index.php'">
+php_value auto_prepend_file "../include/menuChoice.php"
+</IF>

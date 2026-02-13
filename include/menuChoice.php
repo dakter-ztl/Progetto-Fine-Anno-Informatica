@@ -10,6 +10,11 @@ if(in_array($pageName, $obj->loggedInPages)){
 if(in_array($pageName, $obj->DBPages)){
     require_once 'DBHandler.php';
 }
-
+if(in_array($pageName, $obj->userPages)){
+    require_once 'userMenu.php';
+}
+if(in_array($pageName, $obj->adminPages)){
+    require 'adminMenu.php';
+}
 include 'userMenu.php';
 ?>

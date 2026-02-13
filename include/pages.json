@@ -5,7 +5,9 @@
         "loginForm.php",
         "registrazioneForm.php"
     ],
-    "adminpages": [],
+    "adminpages": [
+        "inserisciMaterie.php",
+        "inserisciPercorsi.php"],
     "loggedInPages": [
         "bacheca.php",
         "chat.php",
