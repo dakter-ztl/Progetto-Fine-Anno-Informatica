@@ -1,15 +1,22 @@
 <?php
-include '../include/menuChoice.php';
+session_start();
+require_once '../include/DBHandler.php';
 
-$myId = $_SESSION['idUtente'];
+$myId = $_SESSION['idUtente'] ?? 0;
 
 if(isset($_POST['delete_notifica'])) {
-    $stmt = DBHandler::getPDO()->prepare("DELETE FROM notifiche WHERE idNotifica = :id AND idUtente = :me");
-    $stmt->execute([':id' => $_POST['delete_notifica'], ':me' => $myId]);
+    if ($myId > 0) {
+        $stmt = DBHandler::getPDO()->prepare("DELETE FROM notifiche WHERE idNotifica = :id AND idUtente = :me");
+        $stmt->execute([':id' => $_POST['delete_notifica'], ':me' => $myId]);
+    }
     header("Location: profilo.php");
     exit;
 }
+
+include '../include/menuChoice.php';
 ?>
+
+<link href="../css/style.css" rel="stylesheet">
 
 <div class="container mt-4">
     <div class="row">
@@ -17,8 +24,12 @@ if(isset($_POST['delete_notifica'])) {
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
                     <div class="display-1 mb-2">👤</div>
-                    <h3 class="card-title"><?= htmlspecialchars($_SESSION['nomeUtente']) ?></h3>
-                    <span class="badge bg-primary mb-4 p-2"><?= strtoupper($_SESSION['ruoloUtente']) ?></span>
+                    
+                    <h3 class="card-title"><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Utente') ?></h3>
+                    
+                    <span class="badge bg-primary mb-4 p-2">
+                        <?= htmlspecialchars($_SESSION['ruoloUtente'] ?? 'N/A') ?>
+                    </span>
                     
                     <div class="d-grid gap-2">
                         <a href="messaggi.php" class="btn btn-info text-white">📩 Vai ai Messaggi Privati</a>
@@ -36,25 +47,26 @@ if(isset($_POST['delete_notifica'])) {
                 </div>
                 <ul class="list-group list-group-flush">
                     <?php
-                    $sql = "SELECT * FROM notifiche WHERE idUtente = :me ORDER BY dataNotifica DESC LIMIT 10";
-                    $stmt = DBHandler::getPDO()->prepare($sql);
-                    $stmt->execute([':me' => $myId]);
-                    $notifiche = $stmt->fetchAll();
+                    if ($myId > 0) {
+                        $sql = "SELECT * FROM notifiche WHERE idUtente = :me ORDER BY dataNotifica DESC LIMIT 10";
+                        $stmt = DBHandler::getPDO()->prepare($sql);
+                        $stmt->execute([':me' => $myId]);
+                        $notifiche = $stmt->fetchAll();
 
-                    if(count($notifiche) > 0) {
-                        foreach($notifiche as $notifica) {
-                            echo '<li class="list-group-item d-flex justify-content-between align-items-center">';
-                            echo '<span>' . htmlspecialchars($notifica['testo']) . ' <small class="text-muted ms-2">(' . $notifica['dataNotifica'] . ')</small></span>';
-                            
-                            // Form per cancellare la notifica
-                            echo '<form method="POST" class="m-0">';
-                            echo '<button name="delete_notifica" value="'.$notifica['idNotifica'].'" class="btn btn-sm btn-close" aria-label="Cancella"></button>';
-                            echo '</form>';
-                            
-                            echo '</li>';
+                        if(count($notifiche) > 0) {
+                            foreach($notifiche as $notifica) {
+                                echo '<li class="list-group-item d-flex justify-content-between align-items-center">';
+                                echo '<span>' . htmlspecialchars($notifica['testo']) . ' <small class="text-muted ms-2">(' . $notifica['dataNotifica'] . ')</small></span>';
+                                
+                                echo '<form method="POST" class="m-0">';
+                                echo '<button type="submit" name="delete_notifica" value="'.$notifica['idNotifica'].'" class="btn btn-sm btn-close" aria-label="Cancella"></button>';
+                                echo '</form>';
+                                
+                                echo '</li>';
+                            }
+                        } else {
+                            echo '<li class="list-group-item text-muted text-center py-3">Nessuna nuova notifica.</li>';
                         }
-                    } else {
-                        echo '<li class="list-group-item text-muted text-center py-3">Nessuna nuova notifica.</li>';
                     }
                     ?>
                 </ul>
@@ -66,20 +78,22 @@ if(isset($_POST['delete_notifica'])) {
                 </div>
                 <div class="card-body">
                     <?php
-                    $sql = "SELECT * FROM annunci WHERE idUtente = :me ORDER BY dataPubblicazione DESC LIMIT 5";
-                    $stmt = DBHandler::getPDO()->prepare($sql);
-                    $stmt->execute([':me' => $myId]);
-                    $mieiPost = $stmt->fetchAll();
+                    if ($myId > 0) {
+                        $sql = "SELECT * FROM annunci WHERE idUtente = :me ORDER BY dataPubblicazione DESC LIMIT 5";
+                        $stmt = DBHandler::getPDO()->prepare($sql);
+                        $stmt->execute([':me' => $myId]);
+                        $mieiPost = $stmt->fetchAll();
 
-                    if(count($mieiPost) > 0){
-                        foreach($mieiPost as $post){
-                            echo '<div class="alert alert-light border mb-2">';
-                            echo '<strong>'.htmlspecialchars($post['titolo']).'</strong>';
-                            echo '<br><small class="text-muted">'.substr($post['testo'], 0, 60).'...</small>';
-                            echo '</div>';
+                        if(count($mieiPost) > 0){
+                            foreach($mieiPost as $post){
+                                echo '<div class="alert alert-light border mb-2">';
+                                echo '<strong>'.htmlspecialchars($post['titolo']).'</strong>';
+                                echo '<br><small class="text-muted">'.substr($post['testo'] ?? '', 0, 60).'...</small>';
+                                echo '</div>';
+                            }
+                        } else {
+                            echo "<p class='text-muted'>Non hai ancora scritto nulla in bacheca.</p>";
                         }
-                    } else {
-                        echo "<p class='text-muted'>Non hai ancora scritto nulla in bacheca.</p>";
                     }
                     ?>
                 </div>

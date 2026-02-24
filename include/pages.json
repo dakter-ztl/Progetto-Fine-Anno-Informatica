@@ -6,6 +6,7 @@
         "registrazioneForm.php"
     ],
     "adminpages": [
+        "adminMenu.php",
         "inserisciMaterie.php",
         "inserisciPercorsi.php"],
     "loggedInPages": [

@@ -1,13 +1,11 @@
-/* =========================================
-   1. VARIABILI E BASE
-   ========================================= */
+
 :root {
-    --primary-color: #0d6efd;       /* Blu Bootstrap */
+    --primary-color: #0d6efd;      
     --primary-hover: #0b5ed7;
-    --bg-color: #f4f6f9;            /* Grigio chiarissimo per lo sfondo */
+    --bg-color: #f4f6f9;            
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     --card-hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    --chat-me-bg: #dcf8c6;          /* Verde tipo WhatsApp (o usa blu) */
+    --chat-me-bg: #dcf8c6;          
     --chat-partner-bg: #ffffff;
     --radius-standard: 12px;
 }
@@ -18,7 +16,6 @@ body {
     color: #333;
 }
 
-/* Scrollbar personalizzata (più elegante per Chat e Materie) */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -34,9 +31,6 @@ body {
     background: #a8a8a8; 
 }
 
-/* =========================================
-   2. NAVBAR E MENU
-   ========================================= */
 .navbar {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     background: linear-gradient(90deg, #212529 0%, #343a40 100%);
@@ -47,19 +41,16 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* =========================================
-   3. CARD (Percorsi, Bacheca, Profilo)
-   ========================================= */
 .card {
     border: none;
     border-radius: var(--radius-standard);
     box-shadow: var(--card-shadow);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     background-color: #fff;
-    overflow: hidden; /* Per contenere immagini o header colorati */
+    overflow: hidden; 
 }
 
-/* Effetto Hover solo sulle card che sono link o cliccabili */
+
 .card-hover:hover {
     transform: translateY(-5px);
     box-shadow: var(--card-hover-shadow);
@@ -70,13 +61,10 @@ body {
     font-weight: 600;
 }
 
-/* =========================================
-   4. HOME: SCROLL CONTAINER MATERIE
-   ========================================= */
-/* Questo è il codice specifico per ridurre la grandezza della lista materie */
+
 .scroll-container-materie {
-    max-height: 250px;       /* Altezza fissa */
-    overflow-y: auto;        /* Abilita scroll verticale */
+    max-height: 250px;       
+    overflow-y: auto;        
     border: 1px solid #dee2e6;
     padding: 15px;
     border-radius: var(--radius-standard);
@@ -84,10 +72,10 @@ body {
     margin-bottom: 20px;
 }
 
-/* Griglia interna per le checkbox */
+
 .grid-materie {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Colonne responsive */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 10px;
 }
 
@@ -96,22 +84,18 @@ body {
     font-size: 0.95rem;
 }
 
-/* =========================================
-   5. CHAT (Messaggistica)
-   ========================================= */
-/* Area messaggi scrollabile */
+
 .chat-window {
     height: 450px;
     overflow-y: auto;
-    background-color: #e5ddd5; /* Colore di sfondo stile chat */
-    background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png"); /* Pattern opzionale */
+    background-color: #e5ddd5;
+    background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png"); 
     padding: 20px;
     border-radius: 0 0 var(--radius-standard) var(--radius-standard);
     display: flex;
     flex-direction: column;
 }
 
-/* Bolla messaggio generica */
 .msg-bubble {
     max-width: 75%;
     padding: 10px 15px;
@@ -122,15 +106,13 @@ body {
     word-wrap: break-word;
 }
 
-/* Messaggio MIO (destra, blu/verde) */
 .msg-mine {
     align-self: flex-end;
-    background-color: #d1e7dd; /* Verde chiaro Bootstrap */
+    background-color: #d1e7dd; 
     color: #0f5132;
     border-bottom-right-radius: 2px;
 }
 
-/* Messaggio PARTNER (sinistra, bianco) */
 .msg-partner {
     align-self: flex-start;
     background-color: #fff;
@@ -146,9 +128,6 @@ body {
     margin-top: 4px;
 }
 
-/* =========================================
-   6. BACHECA E COMMENTI
-   ========================================= */
 .post-actions {
     opacity: 0.8;
 }
@@ -164,9 +143,7 @@ body {
     border-radius: 4px;
 }
 
-/* =========================================
-   7. PROFILO (Punteggio Affidabilità)
-   ========================================= */
+
 .score-circle {
     width: 120px;
     height: 120px;
@@ -181,11 +158,11 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.score-high { background: linear-gradient(45deg, #198754, #20c997); } /* Verde */
-.score-mid  { background: linear-gradient(45deg, #ffc107, #ffca2c); color: #333; } /* Giallo */
-.score-low  { background: linear-gradient(45deg, #dc3545, #ff6b6b); } /* Rosso */
+.score-high { background: linear-gradient(45deg, #198754, #20c997); }
+.score-mid  { background: linear-gradient(45deg, #ffc107, #ffca2c); color: #333; }
+.score-low  { background: linear-gradient(45deg, #dc3545, #ff6b6b); } 
 
-/* Avatar Placeholder (Emoji o Iniziali) */
+
 .avatar-placeholder {
     font-size: 4rem;
     margin-bottom: 10px;
