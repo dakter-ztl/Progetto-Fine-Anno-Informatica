@@ -20,7 +20,7 @@ $idUtenteMio = $_SESSION['idUtente'];
 
     <div class="list-group">
         <?php
-        $sql = "SELECT DISTINCT u.idUtente, u.nome, u.ruolo 
+        $sql = "SELECT DISTINCT u.idUtente, u.nome, u.ruoloUtente 
                 FROM utenti u
                 WHERE u.idUtente IN (
                     SELECT idMittente FROM messaggi_privati WHERE idDestinatario = :me1
@@ -36,25 +36,20 @@ $idUtenteMio = $_SESSION['idUtente'];
 
             if (count($conversazioni) > 0) {
                 foreach ($conversazioni as $chat) {
-                    
-                    // --- PROTEZIONE TOTALE ---
-                    // 1. Normalizziamo tutto in minuscolo
+                
                     $chat = array_change_key_case($chat, CASE_LOWER);
-
-                    // 2. Cerchiamo l'ID in tutti i modi possibili
                     $idPartner = 0;
                     if (!empty($chat['idutente'])) $idPartner = $chat['idutente'];
                     elseif (!empty($chat['id']))   $idPartner = $chat['id'];
 
-                    // Se l'ID è ancora 0, saltiamo questa riga (evitiamo link rotti)
                     if ($idPartner <= 0) {
                         echo '<div class="alert alert-danger">Errore riga: ID non trovato</div>';
                         continue; 
                     }
 
-                    // 3. Assegniamo le variabili come richiesto
-                    $nomeUtente = htmlspecialchars($chat['nome']); // Chiave 'nome' dal DB
-                    $ruoloUtente = htmlspecialchars($chat['ruolo']); // Chiave 'ruolo' dal DB
+                
+                    $nomeUtente = htmlspecialchars($chat['nomeUtente']);
+                    $ruoloUtente = htmlspecialchars($chat['ruoloUtente']); 
 
                     // 4. Creiamo il link CORRETTO
                     echo '
