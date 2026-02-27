@@ -1,11 +1,11 @@
 {
     "name": "Next Step Config",
-    "userpages": [
+    "userPages": [
         "home.php", 
         "loginForm.php",
         "registrazioneForm.php"
     ],
-    "adminpages": [
+    "adminPages": [
         "adminMenu.php",
         "inserisciMaterie.php",
         "inserisciPercorsi.php"],
