@@ -14,15 +14,17 @@
                     <div class="card shadow">
                         <div class="card-body p-4">
                             <h3 class="text-center mb-4">Accedi</h3>
-                            
+
+                    
                             <?php if(isset($_GET['error'])): ?>
-                                <div class="alert alert-danger">Nome o Password errati!</div>
+                                <div class="alert alert-danger">Nome o password errati, riprova </div>
                             <?php endif; ?>
-                            
+
+                  
                             <?php if(isset($_GET['success'])): ?>
                                 <div class="alert alert-success">Registrazione avvenuta! Ora puoi accedere.</div>
                             <?php endif; ?>
-
+                          
                             <form action="login.php" method="post">
                                 <div class="mb-3">
                                     <label for="nome" class="form-label">Nome Utente</label>

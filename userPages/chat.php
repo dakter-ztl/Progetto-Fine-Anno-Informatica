@@ -21,7 +21,7 @@ if ($idDestinatario === 0) {
     echo "<div class='container mt-5 alert alert-danger'>
             <h4>Errore Chat</h4>
             <p>Destinatario non valido.</p>
-            <a href='messaggi.php' class='btn btn-secondary'>Torna indietro</a>
+            <a href='../userPages/messaggi.php' class='btn btn-secondary'>Torna indietro</a>
           </div>";
     exit();
 }
@@ -36,7 +36,7 @@ if (!$infoRaw) {
 }
 
 $infoDestinatario = array_change_key_case($infoRaw, CASE_LOWER);
-$nomeUtenteDestinatario = htmlspecialchars($infoDestinatario['nomeutente']); // chiave minuscola per sicurezza
+$nomeUtenteDestinatario = htmlspecialchars($infoDestinatario['nomeutente']); 
 $ruoloUtenteDestinatario = htmlspecialchars($infoDestinatario['ruoloutente'] ?? 'utente');
 ?>
 
@@ -44,7 +44,7 @@ $ruoloUtenteDestinatario = htmlspecialchars($infoDestinatario['ruoloutente'] ?? 
     <div class="card shadow">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <div>
-                <h4 class="mb-0">💬 <?= $nomeUtenteDestinatario ?></h4>
+                <h4 class="mb-0"> <?= $nomeUtenteDestinatario ?></h4>
                 <small class="text-white-50"><?= ucfirst($ruoloUtenteDestinatario) ?></small>
             </div>
             <div class="btn-group">
@@ -55,7 +55,7 @@ $ruoloUtenteDestinatario = htmlspecialchars($infoDestinatario['ruoloutente'] ?? 
 
         <div class="card-body bg-light" style="height: 450px; overflow-y: auto; display: flex; flex-direction: column;">
             <?php
-            $sqlMsg = "SELECT * FROM messaggi_privati 
+            $sqlMsg = "SELECT * FROM messaggi
                        WHERE (idMittente = :me1 AND idDestinatario = :dest1) 
                        OR (idMittente = :dest2 AND idDestinatario = :me2) 
                        ORDER BY dataInvio ASC";
@@ -90,7 +90,7 @@ $ruoloUtenteDestinatario = htmlspecialchars($infoDestinatario['ruoloutente'] ?? 
                 }
             } else {
                 echo "<div class='text-center text-muted mt-5'>";
-                echo "<h5>Nessun messaggio 🦗</h5>";
+                echo "<h5>Nessun messaggio </h5>";
                 echo "<p>Scrivi il primo messaggio a $nomeUtenteDestinatario!</p>";
                 echo "</div>";
             }
@@ -101,7 +101,7 @@ $ruoloUtenteDestinatario = htmlspecialchars($infoDestinatario['ruoloutente'] ?? 
             <form action="inviaMessaggio.php" method="POST" class="d-flex gap-2">
                 <input type="hidden" name="idDestinatario" value="<?= $idDestinatario ?>">
                 <input type="text" name="testo" class="form-control" placeholder="Scrivi un messaggio..." required autocomplete="off">
-                <button type="submit" class="btn btn-primary px-4">Invia ➤</button>
+                <button type="submit" class="btn btn-primary px-4">Invia </button>
             </form>
         </div>
     </div>

@@ -87,7 +87,7 @@ include '../include/menuChoice.php';
     <link href="../css/style.css" rel="stylesheet">
     <div class="card mb-5 shadow-sm bg-light border-0">
         <div class="card-body">
-            <h5 class="text-primary mb-3">✍️ Scrivi in Bacheca</h5>
+            <h5 class="text-primary mb-3">Scrivi un annuncio</h5>
             <form method="POST" action="bacheca.php">
                 <input type="hidden" name="azione" value="nuovo_annuncio">
                 <div class="mb-2">
@@ -101,7 +101,7 @@ include '../include/menuChoice.php';
         </div>
     </div>
 
-    <h4 class="mb-4">📌 Discussioni Recenti</h4>
+    <h4 class="mb-4">Discussioni recenti</h4>
     
     <?php
     $sql = "SELECT a.*, u.nome AS nomeUtente, u.ruolo AS ruoloUtente, u.idUtente as idAutore 
@@ -163,6 +163,14 @@ include '../include/menuChoice.php';
                                 </a> 
                                 <span class="ms-1"><?= htmlspecialchars($risp['testo']) ?></span>
                             </div>
+                            
+                            <?php if (! $isMiaRisp ): ?>
+                                <form method="POST" action="recensioni.php" style="display:inline;">
+                                <input type="hidden" name="idUtenteRicevente" value="<?= $risp['idAutoreRisp'] ?>">
+                                <button type="submit" class="btn btn-secondary btn-sm">Valuta risposta</button>
+                                </form>
+                            <?php endif; ?>
+
                             <?php if ($isMiaRisp || $isAdmin): ?>
                                 <form method="POST" style="display:inline;">
                                     <input type="hidden" name="delete_type" value="risposta">
@@ -170,6 +178,7 @@ include '../include/menuChoice.php';
                                     <button class="btn btn-sm text-danger border-0 p-0 fw-bold">✕</button>
                                 </form>
                             <?php endif; ?>
+
                         </div>
                     <?php endforeach; ?>
 

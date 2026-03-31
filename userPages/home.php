@@ -34,12 +34,12 @@ $dbConnection = DBHandler::getPDO();
 
 <div class="container mt-4">
     <div class="p-4 bg-white shadow-sm rounded">
-        <h2 class="text-center mb-4">Trova il tuo Percorso 🔎</h2>
+        <h2 class="text-center mb-4">Trova il tuo Percorso </h2>
         <p class="text-center text-muted">
-            Bentornato, <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Studente') ?></strong>! Dicci cosa ti piace studiare.
+            Bentornato, <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Studente') ?></strong> !
         </p>
         
-        <form action="home.php" method="GET">
+        <form action="../userPages/home.php" method="GET">
             <div class="mb-4">
                <label class="form-label fw-bold">Quali materie ti piacciono? (Seleziona almeno una)</label>
 <div class="scroll-container-materie">
@@ -66,7 +66,7 @@ $dbConnection = DBHandler::getPDO();
 
             <div class="row g-3">
                 <div class="col-md-3">
-                    <label class="form-label">Budget Max (€)</label>
+                    <label class="form-label">Budget massimo mensile (€)</label>
                     <input type="number" name="budget" class="form-control" placeholder="es. 500" value="<?= isset($_GET['budget']) ? htmlspecialchars($_GET['budget']) : '' ?>">
                 </div>
                 <div class="col-md-3">
@@ -78,7 +78,7 @@ $dbConnection = DBHandler::getPDO();
                     <input type="number" name="difficolta" class="form-control" max="5" min="1" placeholder="es. 5" value="<?= isset($_GET['difficolta']) ? htmlspecialchars($_GET['difficolta']) : '' ?>">
                 </div>
                 <div class="col-md-3 align-self-end">
-                    <button type="submit" class="btn btn-primary w-100">Consigliami! 🎓</button>
+                    <button type="submit" class="btn btn-primary w-100">Consigliami!</button>
                 </div>
             </div>
         </form>
@@ -93,7 +93,7 @@ $dbConnection = DBHandler::getPDO();
                     JOIN categorie c ON p.idCategoria = c.idCategoria ";
             
             if (isset($_GET['materie']) && count($_GET['materie']) > 0) {
-                $sql .= " JOIN percorsi_materie pm ON p.idPercorso = pm.idPercorso ";
+                $sql .= " JOIN percorsiMaterie pm ON p.idPercorso = pm.idPercorso ";
             }
 
             $sql .= " WHERE 1=1";
@@ -135,7 +135,7 @@ $dbConnection = DBHandler::getPDO();
 
                         $stmtMat = $dbConnection->prepare("
                             SELECT m.nomeMateria FROM materie m 
-                            JOIN percorsi_materie pm ON m.idMateria = pm.idMateria 
+                            JOIN percorsiMaterie pm ON m.idMateria = pm.idMateria 
                             WHERE pm.idPercorso = ?");
                         $stmtMat->execute([$corso['idPercorso']]);
                         $materieDelCorso = $stmtMat->fetchAll(PDO::FETCH_COLUMN);
@@ -153,12 +153,12 @@ $dbConnection = DBHandler::getPDO();
                                     <p class="card-text text-muted small">' . htmlspecialchars($corso['descrizione']) . '</p>
                                     
                                     <div class="mb-3">
-                                        <span class="badge bg-light text-dark border">📚 Materie: ' . htmlspecialchars($stringaMaterie) . '</span>
+                                        <span class="badge bg-light text-dark border"> Materie: ' . htmlspecialchars($stringaMaterie) . '</span>
                                     </div>
 
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item px-0">💰 Costo: ' . $prezzoVisualizzato . '</li>
-                                        <li class="list-group-item px-0">📍 Città: ' . htmlspecialchars($corso['citta']) . '</li>
+                                        <li class="list-group-item px-0"> Costo: ' . $prezzoVisualizzato . '</li>
+                                        <li class="list-group-item px-0"> Città: ' . htmlspecialchars($corso['citta']) . '</li>
                                     </ul>
                                 </div>
                                 <div class="card-footer bg-white border-top-0 text-end">
@@ -169,7 +169,7 @@ $dbConnection = DBHandler::getPDO();
                     }
                 } else {
                     echo '<div class="alert alert-warning mt-3 w-100 text-center">
-                            <h5>Nessun percorso trovato! 😢</h5>
+                            <h5>Nessun percorso trovato! </h5>
                             <p>Prova a selezionare meno materie o togliere i filtri di budget/città.</p>
                           </div>';
                 }

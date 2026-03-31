@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['idUtente'])) {
 
     if (!empty($testo) && $idDestinatario > 0) {
         $db = DBHandler::getPDO();
-        $stmt = $db->prepare("INSERT INTO messaggi_privati (idMittente, idDestinatario, testo) VALUES (?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO messaggi (idMittente, idDestinatario, testo) VALUES (?, ?, ?)");
         $stmt->execute([$idMittente, $idDestinatario, $testo]);
     }
     

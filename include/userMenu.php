@@ -24,25 +24,18 @@
         </li>
 
         <?php 
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        
         
         if(isset($_SESSION['idUtente'])): ?>
             <li class="nav-item">
-              <a class="nav-link text-warning fw-bold" href="profilo.php">👤 Il mio Profilo</a>
+              <a class="nav-link text-warning fw-bold" href="profilo.php">Il mio profilo</a>
             </li>
             
             <?php if(isset($_SESSION['ruoloUtente']) && $_SESSION['ruoloUtente'] == 'admin'): ?>
+
                 <li class="nav-item">
-                    <span class="nav-link text-danger fw-bold border border-danger rounded ms-2 px-2">ADMIN MODE</span>
+                    <a class="nav-link" href="../include/adminMenu.php">Modalità ADMIN</a>
                 </li>
-                   <li class="nav-item">
-                     <a class="nav-link" href="../adminPages/inserisciMateria.php">Inserisci materie</a>
-                      </li>
-                  <li class="nav-item">
-                <a class="nav-link" href="../adminPages/inserisciPercorso.php">Inserisci percorsi</a>
-                    </li>
             <?php endif; ?>
         <?php endif; ?>
 

@@ -1,14 +1,14 @@
 {
     "name": "Next Step Config",
-    "userPages": [
+    "userpages": [
         "home.php", 
         "loginForm.php",
         "registrazioneForm.php"
     ],
-    "adminPages": [
+    "adminpages": [
         "adminMenu.php",
-        "inserisciMaterie.php",
-        "inserisciPercorsi.php"],
+        "inserisciMateria.php",
+        "inserisciPercorso.php"],
     "loggedInPages": [
         "bacheca.php",
         "chat.php",

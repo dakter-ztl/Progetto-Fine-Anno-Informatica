@@ -32,7 +32,7 @@ include '../include/menuChoice.php';
                     </span>
                     
                     <div class="d-grid gap-2">
-                        <a href="messaggi.php" class="btn btn-info text-white">📩 Vai ai Messaggi Privati</a>
+                        <a href="messaggi.php" class="btn btn-info text-white">vai ai messaggi privati</a>
                         <a href="../include/logout.php" class="btn btn-outline-danger">Esci (Logout)</a>
                     </div>
                 </div>
@@ -43,7 +43,7 @@ include '../include/menuChoice.php';
             
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-                    <span class="fw-bold">🔔 Le tue Notifiche</span>
+                    <span class="fw-bold">Le tue notifiche</span>
                 </div>
                 <ul class="list-group list-group-flush">
                     <?php
@@ -74,7 +74,7 @@ include '../include/menuChoice.php';
 
             <div class="card shadow-sm">
                 <div class="card-header bg-secondary text-white">
-                    📝 I tuoi post recenti
+                     I tuoi post recenti
                 </div>
                 <div class="card-body">
                     <?php

@@ -16,16 +16,16 @@ $idUtenteMio = $_SESSION['idUtente'];
 ?>
 
 <div class="container mt-4">
-    <h2 class="mb-4">📬 Le tue Conversazioni</h2>
+    <h2 class="mb-4">Le tue Conversazioni</h2>
 
     <div class="list-group">
         <?php
-        $sql = "SELECT DISTINCT u.idUtente, u.nome, u.ruoloUtente 
+        $sql = "SELECT DISTINCT u.idUtente, u.nome, u.ruolo 
                 FROM utenti u
                 WHERE u.idUtente IN (
-                    SELECT idMittente FROM messaggi_privati WHERE idDestinatario = :me1
+                    SELECT idMittente FROM messaggi WHERE idDestinatario = :me1
                     UNION
-                    SELECT idDestinatario FROM messaggi_privati WHERE idMittente = :me2
+                    SELECT idDestinatario FROM messaggi WHERE idMittente = :me2
                 )";
         
         try {
@@ -38,6 +38,8 @@ $idUtenteMio = $_SESSION['idUtente'];
                 foreach ($conversazioni as $chat) {
                 
                     $chat = array_change_key_case($chat, CASE_LOWER);
+
+                  
                     $idPartner = 0;
                     if (!empty($chat['idutente'])) $idPartner = $chat['idutente'];
                     elseif (!empty($chat['id']))   $idPartner = $chat['id'];
@@ -47,11 +49,9 @@ $idUtenteMio = $_SESSION['idUtente'];
                         continue; 
                     }
 
-                
-                    $nomeUtente = htmlspecialchars($chat['nomeUtente']);
-                    $ruoloUtente = htmlspecialchars($chat['ruoloUtente']); 
+                    $nomeUtente = htmlspecialchars($chat['nome']); 
+                    $ruoloUtente = htmlspecialchars($chat['ruolo']);
 
-                    // 4. Creiamo il link CORRETTO
                     echo '
                     <a href="visualizzaProfilo.php?idUtente=' . $idPartner . '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center shadow-sm mb-2 rounded">
                         <div>
