@@ -1,4 +1,3 @@
-# Progetto-Fine-Anno-Informatica
 
 Mereuta Victor 5IE
 
