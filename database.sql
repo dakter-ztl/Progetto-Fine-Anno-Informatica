@@ -89,7 +89,7 @@ CREATE TABLE dettagliPercorsi(
     breakdownBudget TEXT NOT NULL,
     nrTelefono INT NOT NULL,
     PRIMARY KEY(idDettaglio),
-    Foreign Key (idPercorso) REFERENCES percorsi(idPercorso)
+    Foreign Key (idPercorso) REFERENCES percorsi(idPercorso) ON DELETE CASCADE
 ) ;
 
 UPDATE utenti SET ruolo = 'admin' WHERE idUtente = 1;
