@@ -91,7 +91,7 @@ $stelle = str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $pe
                 </div>
                 <div class="col-sm-4">
                     <p class="mb-1 text-muted small">Città</p>
-                    <span class="fw-bold fs-5">📍 <?= htmlspecialchars($percorso['citta']) ?></span>
+                    <span class="fw-bold fs-5"> <?= htmlspecialchars($percorso['citta']) ?></span>
                 </div>
             </div>
 
@@ -116,7 +116,7 @@ $stelle = str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $pe
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <p class="text-muted small mb-1">Indirizzo</p>
-                    <p class="fw-bold" <?= htmlspecialchars($dettagli['indirizzo']) ?></p>
+                      <p class="fw-bold"> <?= htmlspecialchars($dettagli['indirizzo']) ?></p>
                 </div>
                 <div class="col-md-6 mb-3">
                     <p class="text-muted small mb-1">Orari di accoglienza</p>
