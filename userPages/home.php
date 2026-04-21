@@ -40,7 +40,7 @@ $dbConnection = DBHandler::getPDO();
         
         <form action="../userPages/home.php" method="GET">
             <div class="mb-4">
-               <label class="form-label fw-bold">Quali materie ti piacciono? (Seleziona almeno una)</label>
+               <label class="form-label fw-bold ">Quali materie ti piacciono? (Seleziona almeno una)</label>
 <div class="scroll-container-materie">
     <div class="grid-materie">
         <?php

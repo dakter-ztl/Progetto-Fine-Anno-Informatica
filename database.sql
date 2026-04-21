@@ -80,5 +80,16 @@ CREATE TABLE notifiche (
     FOREIGN KEY (idUtente) REFERENCES utenti(idUtente) ON DELETE CASCADE
 );
 
+CREATE TABLE dettagliPercorsi(
+    idDettaglio INT AUTO_INCREMENT NOT NULL,
+    idPercorso INT NOT NULL,
+    descrizione TEXT NOT NULL,
+    indirizzo VARCHAR(100) not NULL,
+    orariAccoglienza VARCHAR(100) NOT NULL,
+    breakdownBudget TEXT NOT NULL,
+    nrTelefono INT NOT NULL,
+    PRIMARY KEY(idDettaglio),
+    Foreign Key (idPercorso) REFERENCES percorsi(idPercorso)
+) ;
 
 UPDATE utenti SET ruolo = 'admin' WHERE idUtente = 1;
