@@ -84,7 +84,6 @@ include '../include/menuChoice.php';
 ?>
 
 <div class="container mt-4">
-    <link href="../css/style.css" rel="stylesheet">
     <div class="card mb-5 shadow-sm bg-light border-0">
         <div class="card-body">
             <h5 class="text-primary mb-3">Scrivi un annuncio</h5>

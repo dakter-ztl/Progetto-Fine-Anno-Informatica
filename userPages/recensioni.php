@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             if ($voto > 5) {
-                $sqlP = "UPDATE utenti SET punteggioAffidabilita = punteggioAffidabilita + 5 
+                $sqlP = "UPDATE utenti SET punteggioAffidabilita = punteggioAffidabilita + 3 
                          WHERE idUtente = :id";
                 $stmtP = DBHandler::getPDO()->prepare($sqlP);
                 $stmtP->execute([':id' => $idUtenteRicevente]);

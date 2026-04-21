@@ -65,7 +65,7 @@ $tipoDiploma = htmlspecialchars($datiUtente['tipoDiploma'] ?? 'Non specificato')
 
             <div class="d-grid gap-2">
                 <a href="chat.php?idDestinatario=<?= $idUtenteVisualizzato ?>" class="btn btn-success btn-lg">
-                    💬 Scrivi Messaggio
+                    Contatta
                 </a>
                 <a href="../userPages/bacheca.php" class="btn btn-outline-secondary">
                     Indietro

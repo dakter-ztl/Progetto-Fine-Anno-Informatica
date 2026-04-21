@@ -10,7 +10,7 @@
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
   <div class="container-fluid">
-    <a class="navbar-brand" href="home.php">Next Step 🚀</a>
+    <a class="navbar-brand" href="home.php">Next Step </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
       <span class="navbar-toggler-icon"></span>
     </button>

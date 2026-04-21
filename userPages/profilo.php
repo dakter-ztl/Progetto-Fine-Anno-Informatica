@@ -16,7 +16,6 @@ if(isset($_POST['delete_notifica'])) {
 include '../include/menuChoice.php';
 ?>
 
-<link href="../css/style.css" rel="stylesheet">
 
 <div class="container mt-4">
     <div class="row">
@@ -32,7 +31,7 @@ include '../include/menuChoice.php';
                     </span>
                     
                     <div class="d-grid gap-2">
-                        <a href="messaggi.php" class="btn btn-info text-white">vai ai messaggi privati</a>
+                        <a href="messaggi.php" class="btn btn-info text-white">Vai ai messaggi privati</a>
                         <a href="../include/logout.php" class="btn btn-outline-danger">Esci (Logout)</a>
                     </div>
                 </div>

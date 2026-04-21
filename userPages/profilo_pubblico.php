@@ -39,7 +39,7 @@ $color = ($score > 50) ? 'text-success' : (($score > 20) ? 'text-warning' : 'tex
                     <p><strong>🎓 Diploma:</strong><br> <?= htmlspecialchars($user['tipoDiploma']) ?></p>
                 </div>
                 <div class="col-6">
-                    <p><strong>⭐ Affidabilità:</strong><br> 
+                    <p><strong>Affidabilità:</strong><br> 
                     <span class="fs-4 fw-bold <?= $color ?>"><?= $score ?>/100</span></p>
                 </div>
             </div>
