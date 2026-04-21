@@ -10,8 +10,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -28,6 +26,7 @@ $dbConnection = DBHandler::getPDO();
     <meta charset="UTF-8">
     <title>Home - NextStep</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
@@ -37,29 +36,31 @@ $dbConnection = DBHandler::getPDO();
         <p class="text-center text-muted">
             Bentornato, <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Studente') ?></strong> !
         </p>
-        
-        <form action="../userPages/home.php" method="GET">
-            <div class="mb-4">
-               <label class="form-label fw-bold ">Quali materie ti piacciono? (Seleziona almeno una)</label>
-<div class="scroll-container-materie">
-    <div class="grid-materie">
-        <?php
-        try {
-            $stmtM = $dbConnection->query("SELECT * FROM materie ORDER BY nomeMateria ASC");
-            while($materia = $stmtM->fetch()) {
-                $isChecked = (isset($_GET['materie']) && in_array($materia['idMateria'], $_GET['materie'])) ? 'checked' : '';
-                
-                echo '<div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="materie[]" value="'.$materia['idMateria'].'" id="m_'.$materia['idMateria'].'" '.$isChecked.'>
-                        <label class="form-check-label" for="m_'.$materia['idMateria'].'">
-                            '.htmlspecialchars($materia['nomeMateria']).'
-                        </label>
-                      </div>';
-            }
-        } catch (PDOException $e) { /* ... */ }
-        ?>
     </div>
-</div>
+    
+    <form action="home.php" method="GET"> <div class="mb-4">
+            <label class="form-label fw-bold">Quali materie ti piacciono? (Seleziona almeno una)</label>
+            <div class="scroll-container-materie">
+                <div class="grid-materie">
+                    <?php
+                    try {
+                        $stmtM = $dbConnection->query("SELECT * FROM materie ORDER BY nomeMateria ASC");
+                        while($materia = $stmtM->fetch()) {
+                            $isChecked = (isset($_GET['materie']) && in_array($materia['idMateria'], $_GET['materie'])) ? 'checked' : '';
+                            
+                            echo '<div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="materie[]" value="'.$materia['idMateria'].'" id="m_'.$materia['idMateria'].'" '.$isChecked.'>
+                                    <label class="form-check-label" for="m_'.$materia['idMateria'].'">
+                                        '.htmlspecialchars($materia['nomeMateria']).'
+                                    </label>
+                                  </div>';
+                        }
+                    } catch (PDOException $e) { 
+                        echo "Errore caricamento materie.";
+                    }
+                    ?>
+                </div>
+            </div>
 
             <hr>
 
@@ -80,8 +81,8 @@ $dbConnection = DBHandler::getPDO();
                     <button type="submit" class="btn btn-primary w-100">Consigliami!</button>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
     <div class="row mt-4">
         <?php
@@ -132,6 +133,7 @@ $dbConnection = DBHandler::getPDO();
                             ? "<span class='text-success fw-bold'>GRATIS</span>" 
                             : "€" . number_format($corso['costoMedioMensile'], 2) . " /mese";
 
+                        
                         $stmtMat = $dbConnection->prepare("
                             SELECT m.nomeMateria FROM materie m 
                             JOIN percorsiMaterie pm ON m.idMateria = pm.idMateria 
@@ -161,7 +163,7 @@ $dbConnection = DBHandler::getPDO();
                                     </ul>
                                 </div>
                                 <div class="card-footer bg-white border-top-0 text-end">
-                                <a href="dettagliPercorso.php" class="btn btn-outline-primary btn-sm">Dettagli</a>
+                                    <a href="dettagliPercorso.php?idPercorso=' . $corso['idPercorso'] . '" class="btn btn-outline-primary btn-sm">Dettagli</a>
                                 </div>
                             </div>
                         </div>';
