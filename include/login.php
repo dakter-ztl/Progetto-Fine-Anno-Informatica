@@ -7,6 +7,25 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once 'DBHandler.php'; 
 
+// Inizializza contatori se non esistono
+if (!isset($_SESSION['login_tentativi'])) {
+    $_SESSION['login_tentativi'] = 0;
+    $_SESSION['login_ultimo_tentativo'] = time();
+}
+
+// Se sono passati 2 minuti, resetta il contatore
+if (time() - $_SESSION['login_ultimo_tentativo'] > 120) {
+    $_SESSION['login_tentativi'] = 0;
+    $_SESSION['login_ultimo_tentativo'] = time();
+}
+
+// Blocca dopo 3 tentativi falliti
+if ($_SESSION['login_tentativi'] >= 3) {
+    $minutiRimasti = ceil((180 - (time() - $_SESSION['login_ultimo_tentativo'])) / 60);
+    header("Location: ../include/loginForm.php?error=bloccato&minuti=$minutiRimasti");
+    exit();
+}
+
 try {
     $dbConnection = DBHandler::getPDO();
 

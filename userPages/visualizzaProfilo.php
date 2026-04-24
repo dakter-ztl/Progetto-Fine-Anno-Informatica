@@ -7,6 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once '../include/DBHandler.php';
 include '../include/menuChoice.php';
 
+// Recupera l'ID utente dal parametro GET
 $idUtenteVisualizzato = 0;
 if (isset($_GET['idUtente']) && is_numeric($_GET['idUtente'])) {
     $idUtenteVisualizzato = (int)$_GET['idUtente'];
@@ -15,14 +16,7 @@ if (isset($_GET['idUtente']) && is_numeric($_GET['idUtente'])) {
 }
 
 if ($idUtenteVisualizzato <= 0) {
-    echo "<div class='container mt-5 alert alert-danger'>";
-    echo "<h4>⚠️ UTENTE NON SPECIFICATO</h4>";
-    echo "<p>Il link non ha passato l'ID correttamente.</p>";
-    echo "<strong>Ecco i dati ricevuti (DEBUG):</strong><pre>";
-    var_dump($_GET); 
-    echo "</pre>";
-    echo "<a href='messaggi.php' class='btn btn-dark'>Torna Indietro</a>";
-    echo "</div>";
+    header('Location: messaggi.php');
     exit();
 }
 
@@ -35,13 +29,13 @@ $stmt->execute([$idUtenteVisualizzato]);
 $datiUtente = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$datiUtente) {
-    echo "<div class='container mt-5 alert alert-danger'>Utente ID $idUtenteVisualizzato non trovato nel DB.</div>";
+    header('Location: messaggi.php');
     exit();
 }
 
-$nomeUtente = htmlspecialchars($datiUtente['nomeUtente']);
+$nomeUtente  = htmlspecialchars($datiUtente['nomeUtente']);
 $ruoloUtente = htmlspecialchars($datiUtente['ruoloUtente']);
-$punteggio = (int)$datiUtente['punteggioAffidabilita'];
+$punteggio   = (int)$datiUtente['punteggioAffidabilita'];
 $tipoDiploma = htmlspecialchars($datiUtente['tipoDiploma'] ?? 'Non specificato');
 ?>
 
