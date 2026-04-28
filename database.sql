@@ -88,6 +88,7 @@ CREATE TABLE dettagliPercorsi(
     orariAccoglienza VARCHAR(100) NOT NULL,
     breakdownBudget TEXT NOT NULL,
     nrTelefono INT NOT NULL,
+    url VARCHAR(2048) NOT NULL,
     PRIMARY KEY(idDettaglio),
     Foreign Key (idPercorso) REFERENCES percorsi(idPercorso) ON DELETE CASCADE
 ) ;
