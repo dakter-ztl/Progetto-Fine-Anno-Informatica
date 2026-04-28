@@ -16,7 +16,7 @@ if(isset($_POST['delete_notifica'])) {
 include '../include/menuChoice.php';
 ?>
 
-
+<link href="../css/style.css" rel="stylesheet">
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-4">
@@ -27,7 +27,7 @@ include '../include/menuChoice.php';
                     <h3 class="card-title"><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Utente') ?></h3>
                     
                     <span class="badge bg-primary mb-4 p-2">
-                        <?= htmlspecialchars($_SESSION['ruoloUtente'] ?? 'N/A') ?>
+                        <?= htmlspecialchars($_SESSION['ruoloUtente'] ) ?>
                     </span>
                     
                     <div class="d-grid gap-2">

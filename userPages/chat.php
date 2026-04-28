@@ -39,6 +39,7 @@ $infoDestinatario = array_change_key_case($infoRaw, CASE_LOWER);
 $nomeUtenteDestinatario = htmlspecialchars($infoDestinatario['nomeutente']); 
 $ruoloUtenteDestinatario = htmlspecialchars($infoDestinatario['ruoloutente'] ?? 'utente');
 ?>
+<link href="../css/style.css" rel="stylesheet">
 
 <div class="container mt-4">
     <div class="card shadow">

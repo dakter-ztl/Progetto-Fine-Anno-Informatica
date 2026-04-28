@@ -14,6 +14,7 @@ include '../include/menuChoice.php';
 
 $idUtenteMio = $_SESSION['idUtente'];
 ?>
+<link href="../css/style.css" rel="stylesheet">
 
 <div class="container mt-4">
     <h2 class="mb-4">Le tue Conversazioni</h2>

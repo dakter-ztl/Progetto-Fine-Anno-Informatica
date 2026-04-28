@@ -18,15 +18,18 @@ if (!isset($_SESSION['idUtente'])) {
 }
 
 $myId = $_SESSION['idUtente'];
+$messaggioEsito = '';
+$salvato = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $idUtenteRicevente = $_POST['idUtenteRicevente'] ?? null;
     $voto              = $_POST['voto'] ?? null;
-    $commento          = $_POST['commento'] ?? null;
+    $commento          = trim($_POST['commento'] ?? '');
     $idUtenteScrittore = $myId;
 
-    if ($voto !== null && $commento !== null && $idUtenteRicevente !== null) {
+    // sicurezza contro modifiche da console -> se non valido non salva
+    if ($voto !== null && $voto >= 1 && $voto <= 10 && !empty($commento) && !empty($idUtenteRicevente)) {
         try {
             $sql = "INSERT INTO recensioni (idUtenteScrittore, idUtenteRicevente, voto, commento, dataRecensione) 
                     VALUES (:idUtenteScrittore, :idUtenteRicevente, :voto, :commento, NOW())";
@@ -63,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 include '../include/menuChoice.php';
 ?>
+<link href="../css/style.css" rel="stylesheet">
 
 <!DOCTYPE html>
 <html lang="it">

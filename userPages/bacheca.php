@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['a
 
 include '../include/menuChoice.php';
 ?>
+<link href="../css/style.css" rel="stylesheet">
 
 <div class="container mt-4">
     <div class="card mb-5 shadow-sm bg-light border-0">

@@ -36,7 +36,7 @@ $percorso = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$percorso) {
     echo "<div class='container mt-5'><div class='alert alert-danger'>
             <h5>Percorso non trovato.</h5>
-            <a href='home.php' class='btn btn-dark mt-2'>Torna al Simulatore</a>
+            <a href='home.php' class='btn btn-dark mt-2'>Torna al simulatore</a>
           </div></div>";
     exit();
 }
@@ -64,6 +64,7 @@ $costoHtml = ($percorso['costoMedioMensile'] == 0)
 
 $stelle = str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $percorso['difficolta']);
 ?>
+<link href="../css/style.css" rel="stylesheet">
 
 <div class="container mt-4 mb-5">
 
@@ -139,6 +140,15 @@ $stelle = str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $pe
                 <p class="text-muted small mb-1">Breakdown del budget</p>
                 <p><?= nl2br(htmlspecialchars($dettagli['breakdownBudget'])) ?></p>
             <?php endif; ?>
+        <?php if (!empty($dettagli['url'])): ?>
+    <hr>
+    <a href="<?= htmlspecialchars($dettagli['url']) ?>" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="btn btn-outline-secondary">
+        Vai al sito ufficiale
+    </a>
+<?php endif; ?>
         </div>
     </div>
     <?php else: ?>

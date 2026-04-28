@@ -38,6 +38,7 @@ $ruoloUtente = htmlspecialchars($datiUtente['ruoloUtente']);
 $punteggio   = (int)$datiUtente['punteggioAffidabilita'];
 $tipoDiploma = htmlspecialchars($datiUtente['tipoDiploma'] ?? 'Non specificato');
 ?>
+<link href="../css/style.css" rel="stylesheet">
 
 <div class="container mt-5">
     <div class="card shadow" style="max-width: 600px; margin: 0 auto;">

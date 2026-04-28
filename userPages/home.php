@@ -32,14 +32,14 @@ $dbConnection = DBHandler::getPDO();
 
 <div class="container mt-4">
     <div class="p-4 bg-white shadow-sm rounded">
-        <h2 class="text-center mb-4">Trova il tuo Percorso </h2>
+        <h2 class="text-center mb-4">Trova il tuo percorso </h2>
         <p class="text-center text-muted">
             Bentornato, <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Studente') ?></strong> !
         </p>
     </div>
     
     <form action="home.php" method="GET"> <div class="mb-4">
-            <label class="form-label fw-bold">Quali materie ti piacciono? (Seleziona almeno una)</label>
+            <label class="form-label fw-bold">Quali materie ti piacciono? (seleziona almeno una)</label>
             <div class="scroll-container-materie">
                 <div class="grid-materie">
                     <?php
