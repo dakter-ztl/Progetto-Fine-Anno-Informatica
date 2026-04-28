@@ -4,7 +4,7 @@
 ## Titolo progetto: Next Step
 
 
-Il progetto consiste in un portale web di simulazione e orientamento post-diploma. Si tratta di un motore di ricerca intelligente che permette agli utenti (studenti) di trovare percorsi di studio, universitari o lavorativi inserendo filtri concreti come budget mensile disponibile, materie di interesse, difficoltà (da 1 a 5) e la città desiderata del percorso. Il sito offre funzionalità di confronto diretto tra i percorsi e include una sezione "Bacheca" interattiva: qui gli utenti registrati possono pubblicare annunci (offerte di lavoro entry-level, richieste info, ricerca alloggi),visuallizare altri profili, mandare messaggi privati e rispondere agli annunci esistenti. Il sistema prevede un'area pubblica per la ricerca e un'area riservata accessibile tramite login per la gestione del profilo e la pubblicazione degli annunci e un'area admin per gli amministratori che prevede un pannello di controllo aggiuntivo.
+Il progetto consiste in un portale web di simulazione e orientamento post-diploma. Si tratta di un motore di ricerca intelligente che permette agli utenti (studenti) di trovare percorsi di studio, universitari o lavorativi inserendo filtri concreti come budget mensile disponibile, materie di interesse, difficoltà (da 1 a 5) e la città desiderata del percorso. Il sito offre funzionalità di confronto diretto tra i percorsi e include una sezione "Bacheca" interattiva: qui gli utenti registrati possono pubblicare annunci (offerte di lavoro entry-level, richieste info, ricerca alloggi),visuallizare altri profili da dove si possono inviare messaggi privati e rispondere agli annunci esistenti. Il sistema prevede un'area pubblica per la ricerca e un'area riservata accessibile tramite login per la gestione del profilo e la pubblicazione degli annunci e un'area admin per gli amministratori che prevede un pannello di controllo aggiuntivo.
 
 
 ## Descrizione approfondita passo per passo del progetto Next Step
@@ -14,7 +14,7 @@ Al primo accesso al sito, lo studente visualizza un menu (`menuChoice.php`) real
 
 * **Simulatore:** Selezionando il Simulatore (o di default all'apertura del sito), l’utente viene indirizzato sulla homepage (`userPages/home.php`). Qui può impostare diversi filtri: materie di interesse, budget massimo mensile, città e difficoltà desiderata. 
 * **Ricerca:** Cliccando sul pulsante **"Consigliami"**, parte la ricerca del percorso che rispetta i filtri impostati. I risultati vengono mostrati tramite card che riportano titolo, una breve descrizione, la città e il costo medio mensile.
-* **Dettagli:** Cliccando sul pulsante **"Dettagli"**, l’utente viene indirizzato alla pagina `dettagliPercorso.php`, contenente l'indirizzo dell'istituto (Università o ITS), il numero di telefono, gli orari di accoglienza, una descrizione approfondita, il breakdown del budget e un link URL al percorso originale.
+* **Dettagli:** Cliccando sul pulsante **"Dettagli"**, l’utente viene indirizzato alla pagina `dettagliPercorso.php`, contenente l'indirizzo dell'istituto (Università, ITS o lavoro), il numero di telefono, gli orari di accoglienza, una descrizione approfondita, il breakdown del budget e un link URL al percorso originale.
 * **Bacheca e Sicurezza:** Se un utente non loggato prova ad accedere alla Bacheca, viene reindirizzato alla pagina di login. Il sistema prevede un massimo di **5 tentativi di login ogni 2 minuti** per prevenire lo spam. Se l'utente non possiede un account, può crearlo tramite il pulsante **"Registrati qui"**.
 
 ### **MODALITÀ CON LOGIN**
@@ -35,7 +35,9 @@ Gli utenti con privilegi admin visualizzano nel menu la voce **"Modalità ADMIN"
 
 Link del sito: https://prontonextstep.it
 
-* **STRUTTURA DATABASE:** 
+* **STRUTTURA DATABASE:**
+
+* 
 CREATE DATABASE IF NOT EXISTS NextStep;
 USE NextStep;
 
