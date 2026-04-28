@@ -37,7 +37,7 @@ Link del sito: https://prontonextstep.it
 
 * **STRUTTURA DATABASE:**
 
-‘’’sql
+```sql
 CREATE DATABASE IF NOT EXISTS NextStep;
 USE NextStep;
 
@@ -135,4 +135,4 @@ CREATE TABLE dettagliPercorsi(
 );
 
 
-’’’
+```
