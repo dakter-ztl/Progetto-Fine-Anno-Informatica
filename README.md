@@ -20,7 +20,7 @@ Al primo accesso al sito, lo studente visualizza un menu (`menuChoice.php`) real
 ### **MODALITÀ CON LOGIN**
 Una volta effettuato l'accesso, vengono sbloccate le funzionalità avanzate:
 
-* **Bacheca:** L'utente può pubblicare un massimo di 4 annunci, rispondere agli altri post nella sezione commenti e recensirli tramite il pulsante **"Valuta"**.
+* **Bacheca:** L'utente può pubblicare un massimo di 4 annunci, rispondere agli altri post nella sezione commenti e recensire le risposte degli altri utenti tramite il pulsante **"Valuta"**.
 * **Sistema di Valutazione:** Cliccando su "Valuta", l'utente accede a `recensioni.php` dove deve inserire un voto (da 1 a 10) e una motivazione. In base al voto, il punteggio di affidabilità dell'utente valutato aumenta di **3 punti** (voto $\ge$ 5) o diminuisce di **2 punti** (voto < 5).
 * **Profili e Chat:** Cliccando sul nome di un utente in bacheca, si viene indirizzati a `visualizzaProfilo.php`, dove sono visibili il nome e il punteggio di affidabilità. Il pulsante **"Contatta"** apre `chat.php`, una chat effettiva che permette di inviare e cancellare messaggi.
 * **Il Mio Profilo:** Nel menu appare la voce `profilo.php`, dove l'utente può visualizzare i propri post recenti, le notifiche (risposte ai post in bacheca) e accedere alla sezione **"Vai ai messaggi privati"** (`messaggi.php`) per consultare lo storico delle chat. È presente inoltre il tasto **Logout** per distruggere la sessione.
