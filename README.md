@@ -37,7 +37,7 @@ Link del sito: https://prontonextstep.it
 
 * **STRUTTURA DATABASE:**
 
-* 
+  
 CREATE DATABASE IF NOT EXISTS NextStep;
 USE NextStep;
 
