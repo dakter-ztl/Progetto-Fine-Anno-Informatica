@@ -101,6 +101,7 @@ CREATE TABLE preferiti(
     FOREIGN KEY(idUtente) REFERENCES utenti(idUtente) ON DELETE CASCADE,
     FOREIGN KEY(idPercorso) REFERENCES percorsi(idPercorso) ON DELETE CASCADE
 );
+
 CREATE TABLE messaggi_privati (
     idMessaggio INT AUTO_INCREMENT PRIMARY KEY,
     idMittente INT NOT NULL,
