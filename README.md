@@ -37,7 +37,7 @@ Link del sito: https://prontonextstep.it
 
 * **STRUTTURA DATABASE:**
 
-  
+‘’’sql
 CREATE DATABASE IF NOT EXISTS NextStep;
 USE NextStep;
 
@@ -133,3 +133,6 @@ CREATE TABLE dettagliPercorsi(
     PRIMARY KEY(idDettaglio),
     Foreign Key (idPercorso) REFERENCES percorsi(idPercorso) ON DELETE CASCADE
 );
+
+
+’’’
