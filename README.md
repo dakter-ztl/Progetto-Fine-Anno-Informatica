@@ -136,22 +136,70 @@ CREATE TABLE dettagliPercorsi(
 
 
 ```
-Screenshot dal sito: 
-<img width="1875" height="957" alt="Screenshot 2026-04-29 163727" src="https://github.com/user-attachments/assets/2ce55f10-cb7e-4cb5-84c3-0983b18f2a98" />
-<img width="1876" height="955" alt="Screenshot 2026-04-29 163644" src="https://github.com/user-attachments/assets/4c064228-6f1d-406b-8aa3-4e998605fa94" />
-<img width="1877" height="956" alt="Screenshot 2026-04-29 163632" src="https://github.com/user-attachments/assets/ccc36685-3c72-4b46-a565-17c031ac537e" />
-<img width="1877" height="957" alt="Screenshot 2026-04-29 163624" src="https://github.com/user-attachments/assets/8af0fa0b-0d36-41c9-bd46-2f59c14dba3a" />
-<img width="1877" height="957" alt="Screenshot 2026-04-29 163616" src="https://github.com/user-attachments/assets/d73e455a-98de-42c4-9be3-9dd20b749a02" />
-<img width="1877" height="957" alt="Screenshot 2026-04-29 163603" src="https://github.com/user-attachments/assets/b41eb9a8-4e09-48ba-b74a-bfa67b93e9df" />
-<img width="1878" height="955" alt="Screenshot 2026-04-29 163551" src="https://github.com/user-attachments/assets/5eefbfa4-48be-4aaf-999e-3762c25629d2" />
-<img width="1880" height="957" alt="Screenshot 2026-04-29 163542" src="https://github.com/user-attachments/assets/755c3fd7-09e7-4611-933a-31b22f61ce2a" />
-<img width="1878" height="956" alt="Screenshot 2026-04-29 163533" src="https://github.com/user-attachments/assets/5444d48d-4e4a-43c4-9899-dfce6435ae45" />
-<img width="1877" height="960" alt="Screenshot 2026-04-29 163522" src="https://github.com/user-attachments/assets/b7dff7cd-8c4e-4743-ae5f-47350ab42e3d" />
-<img width="1877" height="992" alt="Screenshot 2026-04-29 163511" src="https://github.com/user-attachments/assets/216d385c-6f32-4bd7-90cf-913376b1da7d" />
-<img width="1877" height="954" alt="Screenshot 2026-04-29 163437" src="https://github.com/user-attachments/assets/fe75fd0a-01a5-4cec-b881-67e571dbab65" />
-<img width="1877" height="959" alt="Screenshot 2026-04-29 163417" src="https://github.com/user-attachments/assets/c2ef5a89-28a5-474c-a462-dcdb024bd55a" />
-<img width="1877" height="955" alt="Screenshot 2026-04-29 163353" src="https://github.com/user-attachments/assets/7598dc4d-08f7-4872-8b70-315e909f36d3" />
-<img width="1877" height="952" alt="Screenshot 2026-04-29 163341" src="https://github.com/user-attachments/assets/287eab62-7951-462f-a768-2aad42696f74" />
-<img width="1876" height="991" alt="Screenshot 2026-04-29 163233" src="https://github.com/user-attachments/assets/a3fd74df-a6a0-4479-a7da-d751b96da9f0" />
+### **Screenshot**
+____________________________________________________________
+
+### **Home senza aver fatto l'accesso**
+
+<img width="1876" height="991" alt="simsenzalogin" src="https://github.com/user-attachments/assets/79b5fa36-2d24-4a14-986f-d12fcb6a61d1" />
+
+### **Esempio di ricerca sul simulatore senza login**
+
+<img width="1877" height="952" alt="esricercasimsenzalogin" src="https://github.com/user-attachments/assets/c83dde43-6bcb-4af6-bb25-84fe98c69af1" />
+
+### **Dettagli del percorso**
+
+<img width="1877" height="955" alt="es dettaglipercoros" src="https://github.com/user-attachments/assets/382f7f49-53e4-4c1b-8d07-c57001a8631b" />
+
+### **Esempio di ricerca a vuoto senza filtri**
+<img width="1877" height="959" alt="ricercasimtuttipercorsi" src="https://github.com/user-attachments/assets/415ec81b-6b5b-4cd9-bdee-0f7c32eee97f" />
+
+### **Home avendo fatto l'accesso**
+
+<img width="1877" height="954" alt="homeconlogin" src="https://github.com/user-attachments/assets/36601512-5ba1-4695-b605-dfad50bdf3c2" />
+
+### **Bacheca**
+
+<img width="1878" height="955" alt="bacheca" src="https://github.com/user-attachments/assets/1b0c5838-2e7e-445b-bb65-d54d8a34cc5a" />
+
+### **Valuta un commento in bacheca**
+
+<img width="1877" height="957" alt="valutacommento" src="https://github.com/user-attachments/assets/031fd40a-934f-4750-ae87-c5f5ba4da06e" />
+
+### **Visualizza un profilo schiacciando sul nome in bacheca**
+
+<img width="1878" height="956" alt="visualizzaprofi" src="https://github.com/user-attachments/assets/d7711a86-5ce3-49af-84a3-2cec43a5174d" />
+
+### **Il tuo profilo dove si trovano notifiche etc**
+
+<img width="1877" height="992" alt="iltuoprofilo" src="https://github.com/user-attachments/assets/2a958498-a99c-45a4-a4d3-cbfdcaa25f3f" />
+
+### **Le tue conversazioni**
+
+<img width="1877" height="960" alt="letueconversazioni" src="https://github.com/user-attachments/assets/6fe18dcf-dc32-445b-9f7f-d44d8c6bfc7b" />
+
+### **Esempio chat banale**
+
+<img width="1880" height="957" alt="chat" src="https://github.com/user-attachments/assets/3a42e857-d3a1-4166-b39f-fd577920fbc8" />
+
+### **Home con accesso admin (privilegi elevati)**
+
+<img width="1877" height="957" alt="homeadmin" src="https://github.com/user-attachments/assets/fd7274b6-f1cb-4832-9197-91da7f05ee6c" />
+
+### **Bacheca admin**
+
+<img width="1875" height="957" alt="bachechaadmin" src="https://github.com/user-attachments/assets/2db9a8f3-b739-4412-9f41-d10e81e43b74" />
+
+### **Panello di controllo admin**
+
+<img width="1877" height="957" alt="pannellodiconytrollo" src="https://github.com/user-attachments/assets/4703202a-f2a9-48bd-871a-8f929ff47cb0" />
+
+### **Sezione aggiunta percorsi**
+
+<img width="1876" height="955" alt="aggiuntapercorsi" src="https://github.com/user-attachments/assets/24585958-1153-45d0-a8e9-9962aceb6bb4" />
+
+### **Sezione aggiunta materie**
+
+<img width="1877" height="956" alt="aggiuntmaterie" src="https://github.com/user-attachments/assets/2feae5a9-d11f-41cf-85c6-afb9160c2e86" />
 
 
