@@ -13,14 +13,6 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once '../include/DBHandler.php';
 include '../include/menuChoice.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
-    if (isset($_SESSION['idUtente'])) {
-        $stmt = $db->prepare("INSERT INTO preferiti (idUtente, idPercorso) VALUES (?, ?) ON DUPLICATE KEY UPDATE dataSalvataggio = CURRENT_TIMESTAMP");
-        $stmt->execute([$_SESSION['idUtente'], $idPercorso]);
-    }
-    header("Location: " . $_SERVER['REQUEST_URI']);
-    exit();
-}
 
 if (!isset($_GET['idPercorso']) || !is_numeric($_GET['idPercorso'])) {
     echo "<div>
@@ -32,6 +24,15 @@ if (!isset($_GET['idPercorso']) || !is_numeric($_GET['idPercorso'])) {
 
 $idPercorso = (int) $_GET['idPercorso'];
 $db = DBHandler::getPDO();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
+    if (isset($_SESSION['idUtente'])) {
+        $stmt = $db->prepare("INSERT INTO preferiti (idUtente, idPercorso) VALUES (?, ?) ON DUPLICATE KEY UPDATE dataSalvataggio = CURRENT_TIMESTAMP");
+        $stmt->execute([$_SESSION['idUtente'], $idPercorso]);
+    }
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
+}
 
 $stmt = $db->prepare("
     SELECT p.*, c.nomeCategoria
