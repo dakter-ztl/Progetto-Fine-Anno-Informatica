@@ -5,7 +5,7 @@ CREATE TABLE utenti(
     idUtente INT AUTO_INCREMENT NOT NULL,
     nome VARCHAR(100) NOT NULL,        
     password VARCHAR(255) NOT NULL,   
-    ruolo ENUM('studente','mentore','admin') DEFAULT 'studente',
+    ruolo ENUM('studente','admin') DEFAULT 'studente',
     tipoDiploma VARCHAR(255),
     punteggioAffidabilita INT DEFAULT 0, 
     PRIMARY KEY(idUtente)
@@ -87,7 +87,7 @@ CREATE TABLE dettagliPercorsi(
     indirizzo VARCHAR(100) not NULL,
     orariAccoglienza VARCHAR(100) NOT NULL,
     breakdownBudget TEXT NOT NULL,
-    nrTelefono INT NOT NULL,
+    nrTelefono VARCHAR(200) NOT NULL,
     url VARCHAR(2048) NOT NULL,
     PRIMARY KEY(idDettaglio),
     Foreign Key (idPercorso) REFERENCES percorsi(idPercorso) ON DELETE CASCADE

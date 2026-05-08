@@ -29,13 +29,6 @@
                                     <option value="Professionale">Professionale</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label>Ruolo</label>
-                                <select name="ruolo" class="form-control">
-                                    <option value="studente">Studente</option>
-                                    <option value="mentore">Mentore</option>
-                                </select>
-                            </div>
                             <button type="submit" class="btn btn-success w-100">Registrati</button>
                         </form>
                         <div class="mt-3 text-center">

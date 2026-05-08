@@ -26,9 +26,12 @@
         <?php 
         
         
-        if(isset($_SESSION['idUtente'])): ?>
+        <?php if(isset($_SESSION['idUtente'])): ?>
             <li class="nav-item">
               <a class="nav-link text-warning fw-bold" href="profilo.php">Il mio profilo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="percorsiSalvati.php">Percorsi salvati</a>
             </li>
             
             <?php if(isset($_SESSION['ruoloUtente']) && $_SESSION['ruoloUtente'] == 'admin'): ?>
@@ -53,3 +56,5 @@
     </div>
   </div>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+// script per rendere il sito responsive, se non ce questo script la navbar nn si apre

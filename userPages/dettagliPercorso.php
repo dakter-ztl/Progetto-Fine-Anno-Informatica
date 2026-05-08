@@ -13,6 +13,15 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once '../include/DBHandler.php';
 include '../include/menuChoice.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
+    if (isset($_SESSION['idUtente'])) {
+        $stmt = $db->prepare("INSERT INTO preferiti (idUtente, idPercorso) VALUES (?, ?) ON DUPLICATE KEY UPDATE dataSalvataggio = CURRENT_TIMESTAMP");
+        $stmt->execute([$_SESSION['idUtente'], $idPercorso]);
+    }
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
+}
+
 if (!isset($_GET['idPercorso']) || !is_numeric($_GET['idPercorso'])) {
     echo "<div>
             <h5>Percorso non specificato.</h5>
@@ -39,6 +48,13 @@ if (!$percorso) {
             <a href='home.php' class='btn btn-dark mt-2'>Torna al simulatore</a>
           </div></div>";
     exit();
+}
+
+$isSaved = false;
+if (isset($_SESSION['idUtente'])) {
+    $stmtCheck = $db->prepare("SELECT 1 FROM preferiti WHERE idUtente = ? AND idPercorso = ?");
+    $stmtCheck->execute([$_SESSION['idUtente'], $idPercorso]);
+    $isSaved = $stmtCheck->fetch() !== false;
 }
 
 
@@ -148,6 +164,7 @@ $stelle = str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $pe
        class="btn btn-outline-secondary">
         Vai al sito ufficiale
     </a>
+    
 <?php endif; ?>
         </div>
     </div>
@@ -162,6 +179,13 @@ $stelle = str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $pe
         <a href="home.php" class="btn btn-outline-secondary">← Torna al Simulatore</a>
         <?php if (isset($_SESSION['idUtente'])): ?>
             <a href="bacheca.php" class="btn btn-primary">Vai alla Bacheca</a>
+            <?php if (!$isSaved): ?>
+                <form method="post" style="display:inline;">
+                    <button type="submit" name="save" value="1" class="btn btn-success">Salva percorso</button>
+                </form>
+            <?php else: ?>
+                <span class="text-success fw-bold">Percorso salvato nei preferiti</span>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 
