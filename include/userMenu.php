@@ -54,4 +54,3 @@
   </div>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-// script per rendere il sito responsive, se non ce questo script la navbar nn si apre
