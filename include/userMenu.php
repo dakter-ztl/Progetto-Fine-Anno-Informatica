@@ -22,9 +22,6 @@
         <li class="nav-item">
           <a class="nav-link" href="bacheca.php">Bacheca</a>
         </li>
-
-        <?php 
-        
         
         <?php if(isset($_SESSION['idUtente'])): ?>
             <li class="nav-item">
