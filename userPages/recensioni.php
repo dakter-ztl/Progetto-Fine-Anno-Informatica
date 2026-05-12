@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $commento          = trim($_POST['commento'] ?? '');
     $idUtenteScrittore = $myId;
 
-    // sicurezza contro modifiche da console -> se non valido non salva
     if ($voto !== null && $voto >= 1 && $voto <= 10 && !empty($commento) && !empty($idUtenteRicevente)) {
         try {
             $sql = "INSERT INTO recensioni (idUtenteScrittore, idUtenteRicevente, voto, commento, dataRecensione) 
