@@ -185,8 +185,7 @@ $stelle = str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $pe
                     <button type="submit" name="save" value="1" class="btn btn-success">Salva percorso</button>
                 </form>
             <?php else: ?>
-                <span class="text-success fw-bold">Percorso salvato nei preferiti</span>
-            <?php endif; ?>
+        <div class="bg-success text-white p-3 rounded mt-2">Percorso salvato</div>            <?php endif; ?>
         <?php endif; ?>
     </div>
 

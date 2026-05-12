@@ -150,7 +150,7 @@ BEGIN
     SELECT LAST_INSERT_ID() AS idAnnuncio;
 END //
 
---Inserisce una recensione e aggiorna punteggioAffidabilita.
+-- Inserisce una recensione e aggiorna punteggioAffidabilita.
 -- Blocca il doppio voto e l'auto-valutazione.
 CREATE PROCEDURE valutaRisposta(
     IN idUtenteChePubblicaLaRecensione INT,
@@ -159,7 +159,7 @@ CREATE PROCEDURE valutaRisposta(
     IN commentoRecensione              TEXT
 )
 BEGIN
-    DECLARE idUtenteChericeveLaRecensione INT;
+    DECLARE idUtenteCheRiceveLaRecensione INT;
     IF EXISTS (
         SELECT 1 FROM recensioni
         WHERE idUtenteScirttore = idUtenteChePubblicaLaRecensione
@@ -178,7 +178,7 @@ BEGIN
     INSERT INTO recensioni (idUtenteScirttore, idUtenteRicevente, idRisposta, voto, commento)
     VALUES (
         idUtenteChePubblicaLaRecensione,
-        idUtenteChericeveLaRecensione,
+        idUtenteCheRiceveLaRecensione,
         idRispostaSelezionata,
         votoAssegnato,
         commentoRecensione
@@ -186,7 +186,7 @@ BEGIN
 
     UPDATE utenti
     SET    punteggioAffidabilita = punteggioAffidabilita + IF(votoAssegnato >= 5, 3, -2)
-    WHERE  idUtente = idUtenteChericeveLaRecensione;
+    WHERE  idUtente = idUtenteCheRiceveLaRecensione;
 END //
 
 DELIMITER ;

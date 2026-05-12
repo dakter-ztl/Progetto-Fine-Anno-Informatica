@@ -28,13 +28,13 @@
               <a class="nav-link text-warning fw-bold" href="profilo.php">Il mio profilo</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="percorsiSalvati.php">Percorsi salvati</a>
+              <a class="nav-link" href="percorsiSalvati.php">Salvati</a>
             </li>
             
             <?php if(isset($_SESSION['ruoloUtente']) && $_SESSION['ruoloUtente'] == 'admin'): ?>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../include/adminMenu.php">Modalità ADMIN</a>
+                    <a class="nav-link" href="../include/adminMenu.php">ADMIN</a>
                 </li>
             <?php endif; ?>
         <?php endif; ?>
