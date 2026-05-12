@@ -53,6 +53,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['a
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'toggle_stato' && $isAdmin) {
+    $idAnnuncio = $_POST['id_annuncio'];
+    $nuovoStato = $_POST['nuovo_stato'];
+
+    $sql = "UPDATE annunci SET stato = :stato WHERE idAnnuncio = :id";
+    $stmt = DBHandler::getPDO()->prepare($sql);
+    $stmt->execute([':stato' => $nuovoStato, ':id' => $idAnnuncio]);
+    header("Location: bacheca.php");
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'risposta_pubblica') {
     $idAnnuncio = $_POST['id_annuncio'];
     $autoreAnnuncioId = $_POST['id_autore_annuncio'];
@@ -119,6 +130,9 @@ include '../include/menuChoice.php';
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
+                        <span class="badge rounded-pill mb-2 <?= $annuncio['stato'] ? 'bg-success' : 'bg-danger' ?>">
+                            <?= $annuncio['stato'] ? 'Attivo' : 'Chiuso' ?>
+                        </span>
                         <h4 class="card-title d-inline text-primary"><?= htmlspecialchars($annuncio['titolo']) ?></h4>
                         <div class="mt-1">
                             <span class="text-muted small">Pubblicato da:</span>
@@ -129,13 +143,23 @@ include '../include/menuChoice.php';
                             <span class="text-muted small ms-2">- <?= date('d/m H:i', strtotime($annuncio['dataPubblicazione'])) ?></span>
                         </div>
                     </div>
-                    
-                    <?php if ($isMioPost || $isAdmin): ?>
-                        <form method="POST" onsubmit="return confirm('Sei sicuro di voler cancellare questo post?');">
-                            <input type="hidden" name="delete_type" value="annuncio">
-                            <input type="hidden" name="delete_id" value="<?= $annuncio['idAnnuncio'] ?>">
-                            <button class="btn btn-outline-danger btn-sm">🗑️</button>
-                        </form>
+
+                    <?php if ($isAdmin || $isMioPost): ?>
+                        <div class="d-flex gap-1">
+                            <?php if ($isAdmin): ?>
+                                <form method="POST">
+                                    <input type="hidden" name="azione" value="toggle_stato">
+                                    <input type="hidden" name="id_annuncio" value="<?= $annuncio['idAnnuncio'] ?>">
+                                    <input type="hidden" name="nuovo_stato" value="<?= $annuncio['stato'] ? 0 : 1 ?>">
+                                    <button type="submit" class="btn btn-outline-warning btn-sm">Cambia Stato</button>
+                                </form>
+                            <?php endif; ?>
+                            <form method="POST" onsubmit="return confirm('Sei sicuro di voler cancellare questo post?');">
+                                <input type="hidden" name="delete_type" value="annuncio">
+                                <input type="hidden" name="delete_id" value="<?= $annuncio['idAnnuncio'] ?>">
+                                <button class="btn btn-outline-danger btn-sm">🗑️</button>
+                            </form>
+                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -164,21 +188,24 @@ include '../include/menuChoice.php';
                                 <span class="ms-1"><?= htmlspecialchars($risp['testo']) ?></span>
                             </div>
                             
-                            <?php if (! $isMiaRisp ): ?>
-                                <form method="POST" action="recensioni.php" style="display:inline;">
-                                <input type="hidden" name="idUtenteRicevente" value="<?= $risp['idAutoreRisp'] ?>">
-                                <button type="submit" class="btn btn-secondary btn-sm">Valuta risposta</button>
-                                </form>
-                            <?php endif; ?>
+                            <?php if (!$isMiaRisp || $isAdmin): ?>
+                                <div class="d-flex align-items-center gap-2">
+                                    <?php if (!$isMiaRisp): ?>
+                                        <form method="POST" action="recensioni.php" class="m-0">
+                                            <input type="hidden" name="idUtenteRicevente" value="<?= $risp['idAutoreRisp'] ?>">
+                                            <button type="submit" class="btn btn-secondary btn-sm">Valuta risposta</button>
+                                        </form>
+                                    <?php endif; ?>
 
-                            <?php if ($isMiaRisp || $isAdmin): ?>
-                                <form method="POST" style="display:inline;">
-                                    <input type="hidden" name="delete_type" value="risposta">
-                                    <input type="hidden" name="delete_id" value="<?= $risp['idRisposta'] ?>">
-                                    <button class="btn btn-sm text-danger border-0 p-0 fw-bold">✕</button>
-                                </form>
+                                    <?php if ($isMiaRisp || $isAdmin): ?>
+                                        <form method="POST" class="m-0">
+                                            <input type="hidden" name="delete_type" value="risposta">
+                                            <input type="hidden" name="delete_id" value="<?= $risp['idRisposta'] ?>">
+                                            <button class="btn btn-sm text-danger border-0 p-0 fw-bold">✕</button>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
                             <?php endif; ?>
-
                         </div>
                     <?php endforeach; ?>
 
