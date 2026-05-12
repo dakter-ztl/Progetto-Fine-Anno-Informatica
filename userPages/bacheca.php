@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['a
 
     $sql = "UPDATE annunci SET stato = :stato WHERE idAnnuncio = :id";
     $stmt = DBHandler::getPDO()->prepare($sql);
-    $stmt->execute([':stato' => $nuovoStato, ':id' => $idAnnuncio]);
+    $stmt->execute([':stato' => $nuovoStato, ':id' => $idAnnuncio]); // Ora riceverà 'aperto' o 'chiuso'
     header("Location: bacheca.php");
     exit;
 }
@@ -112,15 +112,34 @@ include '../include/menuChoice.php';
         </div>
     </div>
 
-    <h4 class="mb-4">Discussioni recenti</h4>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>Discussioni recenti</h4>
+        <form method="GET" class="d-flex gap-2">
+            <select name="filtro_stato" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()">
+                <option value="tutti" <?= (!isset($_GET['filtro_stato']) || $_GET['filtro_stato'] == 'tutti') ? 'selected' : '' ?>>Tutti gli annunci</option>
+                <option value="aperto" <?= (isset($_GET['filtro_stato']) && $_GET['filtro_stato'] == 'aperto') ? 'selected' : '' ?>>Solo Attivi</option>
+                <option value="chiuso" <?= (isset($_GET['filtro_stato']) && $_GET['filtro_stato'] == 'chiuso') ? 'selected' : '' ?>>Solo Chiusi</option>
+            </select>
+        </form>
+    </div>
     
     <?php
+    $filtroStato = $_GET['filtro_stato'] ?? 'tutti';
+
     $sql = "SELECT a.*, u.nome AS nomeUtente, u.ruolo AS ruoloUtente, u.idUtente as idAutore 
-            FROM annunci a 
-            JOIN utenti u ON a.idUtente = u.idUtente 
-            ORDER BY a.dataPubblicazione DESC";
+            FROM annunci a
+            JOIN utenti u ON a.idUtente = u.idUtente WHERE 1=1";
+    
+    $params = [];
+    if ($filtroStato !== 'tutti') {
+        $sql .= " AND a.stato = :stato";
+        $params[':stato'] = $filtroStato;
+    }
+
+    $sql .= " ORDER BY a.dataPubblicazione DESC";
+    
     $sth = DBHandler::getPDO()->prepare($sql);
-    $sth->execute();
+    $sth->execute($params);
     $annunci = $sth->fetchAll();
 
     foreach ($annunci as $annuncio): 
@@ -130,8 +149,8 @@ include '../include/menuChoice.php';
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <span class="badge rounded-pill mb-2 <?= $annuncio['stato'] ? 'bg-success' : 'bg-danger' ?>">
-                            <?= $annuncio['stato'] ? 'Attivo' : 'Chiuso' ?>
+                        <span class="badge rounded-pill mb-2 <?= ($annuncio['stato'] === 'aperto') ? 'bg-success' : 'bg-danger' ?>">
+                            <?= ($annuncio['stato'] === 'aperto') ? 'Attivo' : 'Chiuso' ?>
                         </span>
                         <h4 class="card-title d-inline text-primary"><?= htmlspecialchars($annuncio['titolo']) ?></h4>
                         <div class="mt-1">
@@ -150,7 +169,7 @@ include '../include/menuChoice.php';
                                 <form method="POST">
                                     <input type="hidden" name="azione" value="toggle_stato">
                                     <input type="hidden" name="id_annuncio" value="<?= $annuncio['idAnnuncio'] ?>">
-                                    <input type="hidden" name="nuovo_stato" value="<?= $annuncio['stato'] ? 0 : 1 ?>">
+                                    <input type="hidden" name="nuovo_stato" value="<?= ($annuncio['stato'] === 'aperto') ? 'chiuso' : 'aperto' ?>">
                                     <button type="submit" class="btn btn-outline-warning btn-sm">Cambia Stato</button>
                                 </form>
                             <?php endif; ?>
@@ -188,7 +207,7 @@ include '../include/menuChoice.php';
                                 <span class="ms-1"><?= htmlspecialchars($risp['testo']) ?></span>
                             </div>
                             
-                            <?php if (!$isMiaRisp || $isAdmin): ?>
+                            <div class="d-flex align-items-center gap-2">
                                 <div class="d-flex align-items-center gap-2">
                                     <?php if (!$isMiaRisp): ?>
                                         <form method="POST" action="recensioni.php" class="m-0">
@@ -205,17 +224,19 @@ include '../include/menuChoice.php';
                                         </form>
                                     <?php endif; ?>
                                 </div>
-                            <?php endif; ?>
+                            </div>
                         </div>
                     <?php endforeach; ?>
 
-                    <form method="POST" class="mt-3 d-flex gap-2">
-                        <input type="hidden" name="azione" value="risposta_pubblica">
-                        <input type="hidden" name="id_annuncio" value="<?= $annuncio['idAnnuncio'] ?>">
-                        <input type="hidden" name="id_autore_annuncio" value="<?= $annuncio['idAutore'] ?>">
-                        <input type="text" name="testo_risposta" class="form-control form-control-sm" placeholder="Rispondi..." required>
-                        <button type="submit" class="btn btn-secondary btn-sm">Invia</button>
-                    </form>
+                    <?php if ($annuncio['stato'] === 'aperto'): ?>
+                        <form method="POST" class="mt-3 d-flex gap-2">
+                            <input type="hidden" name="azione" value="risposta_pubblica">
+                            <input type="hidden" name="id_annuncio" value="<?= $annuncio['idAnnuncio'] ?>">
+                            <input type="hidden" name="id_autore_annuncio" value="<?= $annuncio['idAutore'] ?>">
+                            <input type="text" name="testo_risposta" class="form-control form-control-sm" placeholder="Rispondi..." required>
+                            <button type="submit" class="btn btn-secondary btn-sm">Invia</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
