@@ -592,7 +592,7 @@ Questo è un progetto educativo. Per suggerimenti o segnalazioni:
 
 ## 📄 Licenza
 
-Questo progetto è stato sviluppato come progetto scolastico per l'esame di Informatica.
+Questo progetto è stato sviluppato come progetto scolastico di fine anno in Informatica.
 
 **Autore:** Mereuta Victor - Classe 5IE  
 **Anno Scolastico:** 2025/2026
