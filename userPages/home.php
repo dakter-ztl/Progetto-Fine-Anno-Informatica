@@ -34,7 +34,7 @@ $dbConnection = DBHandler::getPDO();
     <div class="p-4 bg-white shadow-sm rounded">
         <h2 class="text-center mb-4">Trova il tuo percorso </h2>
         <p class="text-center text-muted">
-            Bentornato, <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Studente') ?></strong> !
+            Bentornato <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? '') ?></strong> !
         </p>
     </div>
     
