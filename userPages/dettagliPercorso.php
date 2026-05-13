@@ -11,8 +11,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once '../include/DBHandler.php';
-include '../include/menuChoice.php';
-
 
 if (!isset($_GET['idPercorso']) || !is_numeric($_GET['idPercorso'])) {
     echo "<div>
@@ -33,6 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     header("Location: " . $_SERVER['REQUEST_URI']);
     exit();
 }
+
+include '../include/menuChoice.php';
+
 
 $stmt = $db->prepare("
     SELECT p.*, c.nomeCategoria

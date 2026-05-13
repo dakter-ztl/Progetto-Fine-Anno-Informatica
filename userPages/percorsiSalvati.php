@@ -16,9 +16,19 @@ if (!isset($_SESSION['idUtente'])) {
 }
 
 require_once '../include/DBHandler.php';
-include '../include/menuChoice.php';
 
 $db = DBHandler::getPDO();
+
+// Gestione eliminazione percorso dai preferiti
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
+    $idPercorsoToRemove = (int) $_POST['idPercorso'];
+    $stmt = $db->prepare("DELETE FROM preferiti WHERE idUtente = ? AND idPercorso = ?");
+    $stmt->execute([$_SESSION['idUtente'], $idPercorsoToRemove]);
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
+}
+
+include '../include/menuChoice.php';
 
 $stmt = $db->prepare("
     SELECT p.*, c.nomeCategoria, pr.dataSalvataggio
@@ -65,7 +75,13 @@ $percorsiSalvati = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <p class="mb-1 small text-muted">Difficoltà: <?= str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $percorso['difficolta']) ?></p>
                                 <p class="mb-1 small text-muted">Salvato il: <?= date('d/m/Y', strtotime($percorso['dataSalvataggio'])) ?></p>
                             </div>
-                            <a href="dettagliPercorso.php?idPercorso=<?= $percorso['idPercorso'] ?>" class="btn btn-primary mt-3">Vedi dettagli</a>
+                            <div class="d-flex gap-2 mt-3">
+                                <a href="dettagliPercorso.php?idPercorso=<?= $percorso['idPercorso'] ?>" class="btn btn-primary">Vedi dettagli</a>
+                                <form method="POST" class="d-inline" onsubmit="return confirm('Sei sicuro di voler rimuovere questo percorso dai preferiti?')">
+                                    <input type="hidden" name="idPercorso" value="<?= $percorso['idPercorso'] ?>">
+                                    <button type="submit" name="remove" class="btn btn-danger">Rimuovi</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
