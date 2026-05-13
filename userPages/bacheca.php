@@ -42,7 +42,7 @@ if (isset($_POST['delete_type'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'nuovo_annuncio') {
-    $sql = "INSERT INTO annunci (titolo, testo, idUtente) VALUES (:tit, :test, :uid)";
+    $sql = "CALL publicaAnnuncio(:uid, :tit, :test)";
     $stmt = DBHandler::getPDO()->prepare($sql);
     $stmt->execute([
         ':tit' => $_POST['titolo'], 
@@ -211,7 +211,7 @@ include '../include/menuChoice.php';
                                 <div class="d-flex align-items-center gap-2">
                                     <?php if (!$isMiaRisp): ?>
                                         <form method="POST" action="recensioni.php" class="m-0">
-                                            <input type="hidden" name="idUtenteRicevente" value="<?= $risp['idAutoreRisp'] ?>">
+                                            <input type="hidden" name="idRisposta" value="<?= $risp['idRisposta'] ?>">
                                             <button type="submit" class="btn btn-secondary btn-sm">Valuta risposta</button>
                                         </form>
                                     <?php endif; ?>
