@@ -9,9 +9,17 @@ if(in_array($pageName, $obj->loggedInPages)){
 if(in_array($pageName, $obj->DBPages)){
     require_once 'DBHandler.php';
 }
-if(in_array($pageName, $obj->adminpages)){
+
+// Determina se siamo in un contesto admin
+$isAdminContext = in_array($pageName, $obj->adminpages);
+
+if($isAdminContext){
+    // Siamo in una pagina admin, quindi i link verso userPages devono risalire
+    $GLOBALS['menuPathPrefix'] = '../userPages/';
     require 'adminMenu.php';
 } else {
+    // Siamo in una pagina user normale, quindi i link sono relativi alla stessa directory
+    $GLOBALS['menuPathPrefix'] = './';
     include 'userMenu.php';
 }
 ?>

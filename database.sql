@@ -151,7 +151,8 @@ BEGIN
 END //
 
 -- Inserisce una recensione e aggiorna punteggioAffidabilita.
--- Blocca il doppio voto e l'auto-valutazione.
+-- Blocca il doppio voto e l'auto-valutazione.DELIMITER //
+
 CREATE PROCEDURE valutaRisposta(
     IN idUtenteChePubblicaLaRecensione INT,
     IN idRispostaSelezionata           INT,
@@ -160,21 +161,29 @@ CREATE PROCEDURE valutaRisposta(
 )
 BEGIN
     DECLARE idUtenteCheRiceveLaRecensione INT;
+
+    -- Controlla se l'utente ha già valutato questa risposta
     IF EXISTS (
         SELECT 1 FROM recensioni
         WHERE idUtenteScirttore = idUtenteChePubblicaLaRecensione
           AND idRisposta        = idRispostaSelezionata
     ) THEN
-        SIGNAL SQLSTATE '45000'
+        RESIGNAL
             SET MESSAGE_TEXT = 'Hai già valutato questa risposta.';
     END IF;
+
+    -- Recupera l'ID dell'utente che riceve la recensione
     SELECT idUtente INTO idUtenteCheRiceveLaRecensione
     FROM   risposte
     WHERE  idRisposta = idRispostaSelezionata;
+
+    -- Controlla se l'utente sta cercando di valutare la propria risposta
     IF idUtenteCheRiceveLaRecensione = idUtenteChePubblicaLaRecensione THEN
-        SIGNAL SQLSTATE '45000'
+        RESIGNAL
             SET MESSAGE_TEXT = 'Non puoi valutare una tua risposta.';
     END IF;
+
+    -- Inserisce la recensione nella tabella
     INSERT INTO recensioni (idUtenteScirttore, idUtenteRicevente, idRisposta, voto, commento)
     VALUES (
         idUtenteChePubblicaLaRecensione,
@@ -184,6 +193,7 @@ BEGIN
         commentoRecensione
     );
 
+    -- Aggiorna il punteggio di affidabilità dell'utente che riceve la recensione
     UPDATE utenti
     SET    punteggioAffidabilita = punteggioAffidabilita + IF(votoAssegnato >= 5, 3, -2)
     WHERE  idUtente = idUtenteCheRiceveLaRecensione;

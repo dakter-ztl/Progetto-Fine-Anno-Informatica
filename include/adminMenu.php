@@ -1,11 +1,10 @@
 <?php
 session_start();
 
- if(isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 'admin'){
-    require_once '../include/menuChoice.php';
+if(isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 'admin'){
+    require_once __DIR__ . '/menuChoice.php';
     exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -21,60 +20,59 @@ session_start();
     
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold">Pannello di Controllo</h1>
-        <p class="lead text-muted">Gestisci i contenuti del simulatore </p>
+        <p class="lead text-muted">Gestisci i contenuti del simulatore</p>
     </div>
 
     <div class="row justify-content-center">
         
-        <div class="col-md-5 mb-4">
+        <div class="col-md-4 mb-4">
             <div class="card shadow-sm h-100 border-0 hover-effect">
-                <div class="card-body text-center p-5">
+                <div class="card-body text-center p-5 d-flex flex-column">
                     <div class="display-1 mb-3">📚</div>
                     <h2 class="card-title">Inserisci Materie</h2>
                     <p class="card-text text-muted">
                         Aggiungi nuove materie scolastiche al database per migliorare l'algoritmo di matching.
                     </p>
-                    <a href="../adminPages/inserisciMateria.php" class="btn btn-primary btn-lg mt-3 w-100">
+                    <a href="../adminPages/inserisciMateria.php" class="btn btn-primary btn-lg mt-auto w-100">
                         Vai a Gestione Materie
                     </a>
                 </div>
             </div>
         </div>
         
-        
-
-        <div class="col-md-5 mb-4">
+        <div class="col-md-4 mb-4">
             <div class="card shadow-sm h-100 border-0 hover-effect">
-                <div class="card-body text-center p-5">
+                <div class="card-body text-center p-5 d-flex flex-column">
                     <div class="display-1 mb-3">🚀</div>
                     <h2 class="card-title">Inserisci Percorsi</h2>
                     <p class="card-text text-muted">
                         Crea nuove schede per Università, Lavori o Corsi ITS con i relativi dati economici.
                     </p>
-                    <a href="../adminPages/inserisciPercorso.php" class="btn btn-success btn-lg mt-3 w-100">
+                    <a href="../adminPages/inserisciPercorso.php" class="btn btn-success btn-lg mt-auto w-100">
                         Vai a Gestione Percorsi
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-5 mb-4">
+        <div class="col-md-4 mb-4">
             <div class="card shadow-sm h-100 border-0 hover-effect">
-                <div class="card-body text-center p-5">
+                <div class="card-body text-center p-5 d-flex flex-column">
                     <div class="display-1 mb-3">⭐</div>
                     <h2 class="card-title">Gestisci Recensioni</h2>
                     <p class="card-text text-muted">
                         Approva o rifiuta le recensioni degli utenti per mantenere la qualità del sistema.
                     </p>
-                    <a href="../adminPages/gestisciRecensioni.php" class="btn btn-warning btn-lg mt-3 w-100">
+                    <a href="../adminPages/gestisciRecensioni.php" class="btn btn-warning btn-lg mt-auto w-100">
                         Vai a Gestione Recensioni
                     </a>
                 </div>
             </div>
         </div>
-
-    </div>
-</div>
+        
+    </div> <!-- Chiusura row -->
+    
+</div> <!-- Chiusura container -->
 
 <style>
     .hover-effect:hover {
