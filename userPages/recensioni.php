@@ -33,12 +33,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idRisposta = $_POST['idRisposta'] ?? null;
     $voto       = $_POST['voto'] ?? null;
     $commento   = trim($_POST['commento'] ?? '');
+    $idRisposta = $_POST['idRisposta'] ?? null;
+    $voto       = $_POST['voto'] ?? null;
+    $commento   = trim($_POST['commento'] ?? '');
 
+    if ($voto !== null && $voto >= 1 && $voto <= 10 && !empty($commento) && !empty($idRisposta)) {
     if ($voto !== null && $voto >= 1 && $voto <= 10 && !empty($commento) && !empty($idRisposta)) {
         try {
             $sql = "CALL valutaRisposta(:idUtente, :idRisposta, :voto, :commento)";
+            $sql = "CALL valutaRisposta(:idUtente, :idRisposta, :voto, :commento)";
             $sth = DBHandler::getPDO()->prepare($sql);
             $sth->execute([
+                ':idUtente'  => $myId,
+                ':idRisposta' => $idRisposta,
+                ':voto'      => $voto,
+                ':commento'  => $commento,
                 ':idUtente'  => $myId,
                 ':idRisposta' => $idRisposta,
                 ':voto'      => $voto,

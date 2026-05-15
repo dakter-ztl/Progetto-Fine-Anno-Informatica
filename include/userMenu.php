@@ -8,26 +8,32 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="home.php">Next Step</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mynavbar">
-            <ul class="navbar-nav me-auto">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="home.php">Next Step </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="home.php">Simulatore</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="bacheca.php">Bacheca</a>
+        </li>
+        
+        <?php if(isset($_SESSION['idUtente'])): ?>
+            <li class="nav-item">
+              <a class="nav-link text-warning fw-bold" href="profilo.php">Il mio profilo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="percorsiSalvati.php">Percorsi salvati</a>
+            </li>
+            
+            <?php if(isset($_SESSION['ruoloUtente']) && $_SESSION['ruoloUtente'] == 'admin'): ?>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="home.php">Simulatore</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="bacheca.php">Bacheca</a>
-                </li>
-                <?php if (isset($_SESSION['idUtente'])): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="percorsiSalvati.php">Salvati</a>
-                </li>
-                <?php if (isset($_SESSION['ruoloUtente']) && $_SESSION['ruoloUtente'] === 'admin'): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="../include/adminMenu.php">Admin</a>
+                    <a class="nav-link" href="../include/adminMenu.php">Modalità ADMIN</a>
                 </li>
                 <?php endif; ?>
                 <?php endif; ?>
