@@ -23,12 +23,13 @@
                             </div>
                             <div class="mb-3">
                                 <label>Tipo Diploma</label>
-                                <select name="tipoDiploma" class="form-control">
+                                <select name="tipoDiploma" class="form-control" required>
                                     <option value="Liceo">Liceo</option>
-                                    <option value="Tecnico">Istituto Tecnico</option>
+                                    <option value="Istituto Tecnico">Istituto Tecnico</option>
                                     <option value="Professionale">Professionale</option>
                                 </select>
                             </div>
+                            <input type="hidden" name="ruolo" value="studente">
                             <button type="submit" class="btn btn-success w-100">Registrati</button>
                         </form>
                         <div class="mt-3 text-center">

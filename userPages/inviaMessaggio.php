@@ -11,6 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['idUtente'])) {
         $db = DBHandler::getPDO();
         $stmt = $db->prepare("INSERT INTO messaggi (idMittente, idDestinatario, testo) VALUES (?, ?, ?)");
         $stmt->execute([$idMittente, $idDestinatario, $testo]);
+
+        $nomeMittente = htmlspecialchars($_SESSION['nomeUtente'] ?? 'Un utente');
+        $msgNotifica = $nomeMittente . " ti ha inviato un nuovo messaggio.";
+        $notifStmt = $db->prepare("INSERT INTO notifiche (idUtente, testo) VALUES (?, ?)");
+        $notifStmt->execute([$idDestinatario, $msgNotifica]);
     }
     
     header("Location: chat.php?idDestinatario=$idDestinatario");

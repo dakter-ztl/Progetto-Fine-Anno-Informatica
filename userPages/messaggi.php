@@ -54,12 +54,12 @@ $idUtenteMio = $_SESSION['idUtente'];
                     $ruoloUtente = htmlspecialchars($chat['ruolo']);
 
                     echo '
-                    <a href="visualizzaProfilo.php?idUtente=' . $idPartner . '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center shadow-sm mb-2 rounded">
+                    <a href="chat.php?idDestinatario=' . $idPartner . '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center shadow-sm mb-2 rounded">
                         <div>
                             <h5 class="mb-1">' . $nomeUtente . '</h5>
                             <small class="text-muted">Ruolo: ' . ucfirst($ruoloUtente) . '</small>
                         </div>
-                        <span class="btn btn-info btn-sm text-white">Vedi Profilo ➝</span>
+                       
                     </a>';
                 }
             } else {

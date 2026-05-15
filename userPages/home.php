@@ -17,7 +17,9 @@ error_reporting(E_ALL);
 require_once '../include/DBHandler.php';
 include '../include/menuChoice.php';
 
-$dbConnection = DBHandler::getPDO(); 
+$dbConnection = DBHandler::getPDO();
+
+$materieSelezionate = isset($_GET['materie']) ? array_map('intval', $_GET['materie']) : [];
 ?>
 
 <!DOCTYPE html>
@@ -32,31 +34,45 @@ $dbConnection = DBHandler::getPDO();
 
 <div class="container mt-4">
     <div class="p-4 bg-white shadow-sm rounded">
-        <h2 class="text-center mb-4">Trova il tuo percorso </h2>
+        <h2 class="text-center mb-4">Trova il tuo percorso</h2>
         <p class="text-center text-muted">
-            Bentornato, <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? 'Studente') ?></strong> !
+            Bentornato <strong><?= htmlspecialchars($_SESSION['nomeUtente'] ?? '') ?></strong>!
         </p>
     </div>
-    
-    <form action="home.php" method="GET"> <div class="mb-4">
+
+    <form action="home.php" method="GET">
+
+        <div class="mb-4 mt-4">
             <label class="form-label fw-bold">Quali materie ti piacciono? (seleziona almeno una)</label>
+
+            <!-- Barra ricerca materie realtime -->
+            <input
+                type="text"
+                id="cercaMateria"
+                class="form-control mb-2"
+                placeholder="Cerca una materia..."
+                autocomplete="off"
+            >
+
             <div class="scroll-container-materie">
                 <div class="grid-materie">
                     <?php
                     try {
                         $stmtM = $dbConnection->query("SELECT * FROM materie ORDER BY nomeMateria ASC");
-                        while($materia = $stmtM->fetch()) {
-                            $isChecked = (isset($_GET['materie']) && in_array($materia['idMateria'], $_GET['materie'])) ? 'checked' : '';
-                            
-                            echo '<div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="materie[]" value="'.$materia['idMateria'].'" id="m_'.$materia['idMateria'].'" '.$isChecked.'>
-                                    <label class="form-check-label" for="m_'.$materia['idMateria'].'">
-                                        '.htmlspecialchars($materia['nomeMateria']).'
-                                    </label>
-                                  </div>';
+                        while ($materia = $stmtM->fetch()) {
+                            $isChecked = in_array((int)$materia['idMateria'], $materieSelezionate) ? 'checked' : '';
+                            echo '
+                            <div class="form-check materia-item">
+                                <input class="form-check-input" type="checkbox" name="materie[]"
+                                    value="' . $materia['idMateria'] . '"
+                                    id="m_' . $materia['idMateria'] . '" ' . $isChecked . '>
+                                <label class="form-check-label" for="m_' . $materia['idMateria'] . '">
+                                    ' . htmlspecialchars($materia['nomeMateria']) . '
+                                </label>
+                            </div>';
                         }
-                    } catch (PDOException $e) { 
-                        echo "Errore caricamento materie.";
+                    } catch (PDOException $e) {
+                        echo '<p class="text-danger">Errore caricamento materie.</p>';
                     }
                     ?>
                 </div>
@@ -67,15 +83,18 @@ $dbConnection = DBHandler::getPDO();
             <div class="row g-3">
                 <div class="col-md-3">
                     <label class="form-label">Budget massimo mensile (€)</label>
-                    <input type="number" name="budget" class="form-control" placeholder="es. 500" value="<?= isset($_GET['budget']) ? htmlspecialchars($_GET['budget']) : '' ?>">
+                    <input type="number" name="budget" class="form-control" placeholder="es. 500"
+                        value="<?= isset($_GET['budget']) ? htmlspecialchars($_GET['budget']) : '' ?>">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Città</label>
-                    <input type="text" name="citta" class="form-control" placeholder="es. Milano" value="<?= isset($_GET['citta']) ? htmlspecialchars($_GET['citta']) : '' ?>">
+                    <input type="text" name="citta" class="form-control" placeholder="es. Milano"
+                        value="<?= isset($_GET['citta']) ? htmlspecialchars($_GET['citta']) : '' ?>">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Difficoltà Esatta (1-5)</label>
-                    <input type="number" name="difficolta" class="form-control" max="5" min="1" placeholder="es. 5" value="<?= isset($_GET['difficolta']) ? htmlspecialchars($_GET['difficolta']) : '' ?>">
+                    <input type="number" name="difficolta" class="form-control" max="5" min="1" placeholder="es. 5"
+                        value="<?= isset($_GET['difficolta']) ? htmlspecialchars($_GET['difficolta']) : '' ?>">
                 </div>
                 <div class="col-md-3 align-self-end">
                     <button type="submit" class="btn btn-primary w-100">Consigliami!</button>
@@ -86,36 +105,46 @@ $dbConnection = DBHandler::getPDO();
 
     <div class="row mt-4">
         <?php
-        if (isset($_GET['materie']) || isset($_GET['budget']) || isset($_GET['citta']) || isset($_GET['difficolta'])) { 
-            
-            $sql = "SELECT DISTINCT p.*, c.nomeCategoria 
-                    FROM percorsi p 
-                    JOIN categorie c ON p.idCategoria = c.idCategoria ";
-            
-            if (isset($_GET['materie']) && count($_GET['materie']) > 0) {
-                $sql .= " JOIN percorsiMaterie pm ON p.idPercorso = pm.idPercorso ";
+        // Unisci materie visibili selezionate + materie nascoste già selezionate
+        $materieVisibiliSelezionate = isset($_GET['materie_visibili']) ? array_map('intval', $_GET['materie_visibili']) : [];
+        $tutteLeMaterie = array_unique(array_merge($materieSelezionate, $materieVisibiliSelezionate));
+
+        // Unisci materie visibili selezionate + materie nascoste già selezionate
+        $materieVisibiliSelezionate = isset($_GET['materie_visibili']) ? array_map('intval', $_GET['materie_visibili']) : [];
+        $tutteLeMaterie = array_unique(array_merge($materieSelezionate, $materieVisibiliSelezionate));
+
+        $avviaRicerca = (isset($_GET['budget']) || isset($_GET['citta']) || isset($_GET['difficolta']) || !empty($tutteLeMaterie))
+                        && !isset($_GET['solo_filtro']);
+
+        if ($avviaRicerca) {
+            $sql = "SELECT DISTINCT p.*, c.nomeCategoria
+                    FROM percorsi p
+                    JOIN categorie c ON p.idCategoria = c.idCategoria";
+
+            if (!empty($tutteLeMaterie)) {
+                $sql .= " JOIN percorsiMaterie pm ON p.idPercorso = pm.idPercorso";
             }
 
             $sql .= " WHERE 1=1";
             $queryParams = [];
 
-            if (isset($_GET['materie']) && count($_GET['materie']) > 0) {
-                $inQuery = implode(',', array_fill(0, count($_GET['materie']), '?'));
+            if (!empty($tutteLeMaterie)) {
+                $inQuery = implode(',', array_fill(0, count($tutteLeMaterie), '?'));
                 $sql .= " AND pm.idMateria IN ($inQuery)";
-                $queryParams = array_merge($queryParams, $_GET['materie']);
+                $queryParams = array_merge($queryParams, $tutteLeMaterie);
             }
 
-            if (isset($_GET['budget']) && $_GET['budget'] !== '') {
+            if (!empty($_GET['budget'])) {
                 $sql .= " AND p.costoMedioMensile <= ?";
                 $queryParams[] = $_GET['budget'];
             }
 
-            if (isset($_GET['citta']) && $_GET['citta'] !== '') {
+            if (!empty($_GET['citta'])) {
                 $sql .= " AND p.citta LIKE ?";
-                $queryParams[] = "%" . $_GET['citta'] . "%";
+                $queryParams[] = '%' . $_GET['citta'] . '%';
             }
 
-            if (isset($_GET['difficolta']) && $_GET['difficolta'] !== '') {
+            if (!empty($_GET['difficolta'])) {
                 $sql .= " AND p.difficolta = ?";
                 $queryParams[] = $_GET['difficolta'];
             }
@@ -125,22 +154,20 @@ $dbConnection = DBHandler::getPDO();
                 $sth->execute($queryParams);
                 $risultatiPercorsi = $sth->fetchAll();
 
-                if (count($risultatiPercorsi) > 0) {
+                if (!empty($risultatiPercorsi)) {
                     echo '<h4 class="mb-3 w-100">Ecco cosa ti consigliamo:</h4>';
                     foreach ($risultatiPercorsi as $corso) {
-                        
-                        $prezzoVisualizzato = ($corso['costoMedioMensile'] == 0) 
-                            ? "<span class='text-success fw-bold'>GRATIS</span>" 
+                        $prezzoVisualizzato = ($corso['costoMedioMensile'] == 0)
+                            ? "<span class='text-success fw-bold'>GRATIS</span>"
                             : "€" . number_format($corso['costoMedioMensile'], 2) . " /mese";
 
-                        
                         $stmtMat = $dbConnection->prepare("
-                            SELECT m.nomeMateria FROM materie m 
-                            JOIN percorsiMaterie pm ON m.idMateria = pm.idMateria 
+                            SELECT m.nomeMateria FROM materie m
+                            JOIN percorsiMaterie pm ON m.idMateria = pm.idMateria
                             WHERE pm.idPercorso = ?");
                         $stmtMat->execute([$corso['idPercorso']]);
                         $materieDelCorso = $stmtMat->fetchAll(PDO::FETCH_COLUMN);
-                        $stringaMaterie = implode(", ", $materieDelCorso);
+                        $stringaMaterie  = implode(", ", $materieDelCorso);
 
                         echo '
                         <div class="col-md-4 mb-4">
@@ -152,14 +179,12 @@ $dbConnection = DBHandler::getPDO();
                                 <div class="card-body">
                                     <h5 class="card-title">' . htmlspecialchars($corso['titolo']) . '</h5>
                                     <p class="card-text text-muted small">' . htmlspecialchars($corso['descrizione']) . '</p>
-                                    
                                     <div class="mb-3">
-                                        <span class="badge bg-light text-dark border"> Materie: ' . htmlspecialchars($stringaMaterie) . '</span>
+                                        <span class="badge bg-light text-dark border">Materie: ' . htmlspecialchars($stringaMaterie) . '</span>
                                     </div>
-
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item px-0"> Costo: ' . $prezzoVisualizzato . '</li>
-                                        <li class="list-group-item px-0"> Città: ' . htmlspecialchars($corso['citta']) . '</li>
+                                        <li class="list-group-item px-0">Costo: ' . $prezzoVisualizzato . '</li>
+                                        <li class="list-group-item px-0">Città: ' . htmlspecialchars($corso['citta']) . '</li>
                                     </ul>
                                 </div>
                                 <div class="card-footer bg-white border-top-0 text-end">
@@ -170,7 +195,7 @@ $dbConnection = DBHandler::getPDO();
                     }
                 } else {
                     echo '<div class="alert alert-warning mt-3 w-100 text-center">
-                            <h5>Nessun percorso trovato! </h5>
+                            <h5>Nessun percorso trovato!</h5>
                             <p>Prova a selezionare meno materie o togliere i filtri di budget/città.</p>
                           </div>';
                 }
@@ -182,5 +207,14 @@ $dbConnection = DBHandler::getPDO();
     </div>
 </div>
 
+<script>
+document.getElementById('cercaMateria').addEventListener('input', function () {
+    const termine = this.value.toLowerCase();
+    document.querySelectorAll('.materia-item').forEach(function (item) {
+        const testo = item.querySelector('label').textContent.toLowerCase();
+        item.style.display = testo.includes(termine) ? '' : 'none';
+    });
+});
+</script>
 </body>
 </html>

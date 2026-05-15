@@ -21,40 +21,31 @@ $myId = $_SESSION['idUtente'];
 $messaggioEsito = '';
 $salvato = false;
 
+$idRisposta = $_POST['idRisposta'] ?? $_GET['idRisposta'] ?? null;
+if ($idRisposta === null || !is_numeric($idRisposta)) {
+    $messaggioEsito = "Errore: ID risposta non valido o mancante.";
+}
+
+$showForm = ($idRisposta !== null && empty($salvato));
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $idUtenteRicevente = $_POST['idUtenteRicevente'] ?? null;
-    $voto              = $_POST['voto'] ?? null;
-    $commento          = trim($_POST['commento'] ?? '');
-    $idUtenteScrittore = $myId;
+    $idRisposta = $_POST['idRisposta'] ?? null;
+    $voto       = $_POST['voto'] ?? null;
+    $commento   = trim($_POST['commento'] ?? '');
 
-    if ($voto !== null && $voto >= 1 && $voto <= 10 && !empty($commento) && !empty($idUtenteRicevente)) {
+    if ($voto !== null && $voto >= 1 && $voto <= 10 && !empty($commento) && !empty($idRisposta)) {
         try {
-            $sql = "INSERT INTO recensioni (idUtenteScrittore, idUtenteRicevente, voto, commento, dataRecensione) 
-                    VALUES (:idUtenteScrittore, :idUtenteRicevente, :voto, :commento, NOW())";
+            $sql = "CALL valutaRisposta(:idUtente, :idRisposta, :voto, :commento)";
             $sth = DBHandler::getPDO()->prepare($sql);
             $sth->execute([
-                ':idUtenteScrittore' => $idUtenteScrittore,
-                ':idUtenteRicevente' => $idUtenteRicevente,
-                ':voto'              => $voto,
-                ':commento'          => $commento,
+                ':idUtente'  => $myId,
+                ':idRisposta' => $idRisposta,
+                ':voto'      => $voto,
+                ':commento'  => $commento,
             ]);
 
-            if ($voto > 5) {
-                $sqlP = "UPDATE utenti SET punteggioAffidabilita = punteggioAffidabilita + 3 
-                         WHERE idUtente = :id";
-                $stmtP = DBHandler::getPDO()->prepare($sqlP);
-                $stmtP->execute([':id' => $idUtenteRicevente]);
-
-            } elseif ($voto < 5) {
-                $sqlP = "UPDATE utenti 
-                         SET punteggioAffidabilita = GREATEST(0, punteggioAffidabilita - 2) 
-                         WHERE idUtente = :id AND punteggioAffidabilita > 2";
-                $stmtP = DBHandler::getPDO()->prepare($sqlP);
-                $stmtP->execute([':id' => $idUtenteRicevente]);
-            }
-
-            $messaggioEsito = "Recensione salvata!";
+            $messaggioEsito = "Recensione inviata! Verrà approvata da un amministratore prima di essere valida.";
             $salvato = true;
 
         } catch (PDOException $e) {
@@ -82,10 +73,10 @@ include '../include/menuChoice.php';
             <div class="alert alert-info"><?= htmlspecialchars($messaggioEsito) ?></div>
         <?php endif; ?>
 
-        <?php if (empty($salvato)): ?>
+        <?php if ($showForm): ?>
         <h5 class="mb-4">Lascia una recensione</h5>
         <form method="POST" action="recensioni.php">
-            <input type="hidden" name="idUtenteRicevente" value="<?= htmlspecialchars($idUtenteRicevente ?? '') ?>">
+            <input type="hidden" name="idRisposta" value="<?= htmlspecialchars($idRisposta) ?>">
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Voto (1-10)</label>

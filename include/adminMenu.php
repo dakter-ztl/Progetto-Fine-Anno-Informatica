@@ -58,6 +58,21 @@ session_start();
             </div>
         </div>
 
+        <div class="col-md-5 mb-4">
+            <div class="card shadow-sm h-100 border-0 hover-effect">
+                <div class="card-body text-center p-5">
+                    <div class="display-1 mb-3">⭐</div>
+                    <h2 class="card-title">Gestisci Recensioni</h2>
+                    <p class="card-text text-muted">
+                        Approva o rifiuta le recensioni degli utenti per mantenere la qualità del sistema.
+                    </p>
+                    <a href="../adminPages/gestisciRecensioni.php" class="btn btn-warning btn-lg mt-3 w-100">
+                        Vai a Gestione Recensioni
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

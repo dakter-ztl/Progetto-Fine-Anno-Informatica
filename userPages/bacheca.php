@@ -42,7 +42,7 @@ if (isset($_POST['delete_type'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'nuovo_annuncio') {
-    $sql = "INSERT INTO annunci (titolo, testo, idUtente) VALUES (:tit, :test, :uid)";
+    $sql = "CALL publicaAnnuncio(:uid, :tit, :test)";
     $stmt = DBHandler::getPDO()->prepare($sql);
     $stmt->execute([
         ':tit' => $_POST['titolo'], 
@@ -50,6 +50,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['a
         ':uid' => $myId
     ]);
     header("Location: bacheca.php"); 
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'toggle_stato' && $isAdmin) {
+    $idAnnuncio = $_POST['id_annuncio'];
+    $nuovoStato = $_POST['nuovo_stato'];
+
+    $sql = "UPDATE annunci SET stato = :stato WHERE idAnnuncio = :id";
+    $stmt = DBHandler::getPDO()->prepare($sql);
+    $stmt->execute([':stato' => $nuovoStato, ':id' => $idAnnuncio]); // Ora riceverà 'aperto' o 'chiuso'
+    header("Location: bacheca.php");
     exit;
 }
 
@@ -101,15 +112,34 @@ include '../include/menuChoice.php';
         </div>
     </div>
 
-    <h4 class="mb-4">Discussioni recenti</h4>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>Discussioni recenti</h4>
+        <form method="GET" class="d-flex gap-2">
+            <select name="filtro_stato" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()">
+                <option value="tutti" <?= (!isset($_GET['filtro_stato']) || $_GET['filtro_stato'] == 'tutti') ? 'selected' : '' ?>>Tutti gli annunci</option>
+                <option value="aperto" <?= (isset($_GET['filtro_stato']) && $_GET['filtro_stato'] == 'aperto') ? 'selected' : '' ?>>Solo Attivi</option>
+                <option value="chiuso" <?= (isset($_GET['filtro_stato']) && $_GET['filtro_stato'] == 'chiuso') ? 'selected' : '' ?>>Solo Chiusi</option>
+            </select>
+        </form>
+    </div>
     
     <?php
+    $filtroStato = $_GET['filtro_stato'] ?? 'tutti';
+
     $sql = "SELECT a.*, u.nome AS nomeUtente, u.ruolo AS ruoloUtente, u.idUtente as idAutore 
-            FROM annunci a 
-            JOIN utenti u ON a.idUtente = u.idUtente 
-            ORDER BY a.dataPubblicazione DESC";
+            FROM annunci a
+            JOIN utenti u ON a.idUtente = u.idUtente WHERE 1=1";
+    
+    $params = [];
+    if ($filtroStato !== 'tutti') {
+        $sql .= " AND a.stato = :stato";
+        $params[':stato'] = $filtroStato;
+    }
+
+    $sql .= " ORDER BY a.dataPubblicazione DESC";
+    
     $sth = DBHandler::getPDO()->prepare($sql);
-    $sth->execute();
+    $sth->execute($params);
     $annunci = $sth->fetchAll();
 
     foreach ($annunci as $annuncio): 
@@ -119,6 +149,9 @@ include '../include/menuChoice.php';
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
+                        <span class="badge rounded-pill mb-2 <?= ($annuncio['stato'] === 'aperto') ? 'bg-success' : 'bg-danger' ?>">
+                            <?= ($annuncio['stato'] === 'aperto') ? 'Attivo' : 'Chiuso' ?>
+                        </span>
                         <h4 class="card-title d-inline text-primary"><?= htmlspecialchars($annuncio['titolo']) ?></h4>
                         <div class="mt-1">
                             <span class="text-muted small">Pubblicato da:</span>
@@ -129,13 +162,23 @@ include '../include/menuChoice.php';
                             <span class="text-muted small ms-2">- <?= date('d/m H:i', strtotime($annuncio['dataPubblicazione'])) ?></span>
                         </div>
                     </div>
-                    
-                    <?php if ($isMioPost || $isAdmin): ?>
-                        <form method="POST" onsubmit="return confirm('Sei sicuro di voler cancellare questo post?');">
-                            <input type="hidden" name="delete_type" value="annuncio">
-                            <input type="hidden" name="delete_id" value="<?= $annuncio['idAnnuncio'] ?>">
-                            <button class="btn btn-outline-danger btn-sm">🗑️</button>
-                        </form>
+
+                    <?php if ($isAdmin || $isMioPost): ?>
+                        <div class="d-flex gap-1">
+                            <?php if ($isAdmin): ?>
+                                <form method="POST">
+                                    <input type="hidden" name="azione" value="toggle_stato">
+                                    <input type="hidden" name="id_annuncio" value="<?= $annuncio['idAnnuncio'] ?>">
+                                    <input type="hidden" name="nuovo_stato" value="<?= ($annuncio['stato'] === 'aperto') ? 'chiuso' : 'aperto' ?>">
+                                    <button type="submit" class="btn btn-outline-warning btn-sm">Cambia Stato</button>
+                                </form>
+                            <?php endif; ?>
+                            <form method="POST" onsubmit="return confirm('Sei sicuro di voler cancellare questo post?');">
+                                <input type="hidden" name="delete_type" value="annuncio">
+                                <input type="hidden" name="delete_id" value="<?= $annuncio['idAnnuncio'] ?>">
+                                <button class="btn btn-outline-danger btn-sm">🗑️</button>
+                            </form>
+                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -164,31 +207,36 @@ include '../include/menuChoice.php';
                                 <span class="ms-1"><?= htmlspecialchars($risp['testo']) ?></span>
                             </div>
                             
-                            <?php if (! $isMiaRisp ): ?>
-                                <form method="POST" action="recensioni.php" style="display:inline;">
-                                <input type="hidden" name="idUtenteRicevente" value="<?= $risp['idAutoreRisp'] ?>">
-                                <button type="submit" class="btn btn-secondary btn-sm">Valuta risposta</button>
-                                </form>
-                            <?php endif; ?>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <?php if (!$isMiaRisp): ?>
+                                        <form method="POST" action="recensioni.php" class="m-0">
+                                            <input type="hidden" name="idRisposta" value="<?= $risp['idRisposta'] ?>">
+                                            <button type="submit" class="btn btn-secondary btn-sm">Valuta risposta</button>
+                                        </form>
+                                    <?php endif; ?>
 
-                            <?php if ($isMiaRisp || $isAdmin): ?>
-                                <form method="POST" style="display:inline;">
-                                    <input type="hidden" name="delete_type" value="risposta">
-                                    <input type="hidden" name="delete_id" value="<?= $risp['idRisposta'] ?>">
-                                    <button class="btn btn-sm text-danger border-0 p-0 fw-bold">✕</button>
-                                </form>
-                            <?php endif; ?>
-
+                                    <?php if ($isMiaRisp || $isAdmin): ?>
+                                        <form method="POST" class="m-0">
+                                            <input type="hidden" name="delete_type" value="risposta">
+                                            <input type="hidden" name="delete_id" value="<?= $risp['idRisposta'] ?>">
+                                            <button class="btn btn-sm text-danger border-0 p-0 fw-bold">✕</button>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
                     <?php endforeach; ?>
 
-                    <form method="POST" class="mt-3 d-flex gap-2">
-                        <input type="hidden" name="azione" value="risposta_pubblica">
-                        <input type="hidden" name="id_annuncio" value="<?= $annuncio['idAnnuncio'] ?>">
-                        <input type="hidden" name="id_autore_annuncio" value="<?= $annuncio['idAutore'] ?>">
-                        <input type="text" name="testo_risposta" class="form-control form-control-sm" placeholder="Rispondi..." required>
-                        <button type="submit" class="btn btn-secondary btn-sm">Invia</button>
-                    </form>
+                    <?php if ($annuncio['stato'] === 'aperto'): ?>
+                        <form method="POST" class="mt-3 d-flex gap-2">
+                            <input type="hidden" name="azione" value="risposta_pubblica">
+                            <input type="hidden" name="id_annuncio" value="<?= $annuncio['idAnnuncio'] ?>">
+                            <input type="hidden" name="id_autore_annuncio" value="<?= $annuncio['idAutore'] ?>">
+                            <input type="text" name="testo_risposta" class="form-control form-control-sm" placeholder="Rispondi..." required>
+                            <button type="submit" class="btn btn-secondary btn-sm">Invia</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
