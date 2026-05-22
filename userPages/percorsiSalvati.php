@@ -31,12 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
 include '../include/menuChoice.php';
 
 $stmt = $db->prepare("
-    SELECT p.*, c.nomeCategoria, pr.dataSalvataggio
-    FROM percorsi p
-    JOIN categorie c ON p.idCategoria = c.idCategoria
-    JOIN preferiti pr ON pr.idPercorso = p.idPercorso
-    WHERE pr.idUtente = ?
-    ORDER BY pr.dataSalvataggio DESC
+    SELECT percorsi.*, categorie.nomeCategoria, preferiti.dataSalvataggio
+    FROM percorsi
+    JOIN categorie ON percorsi.idCategoria = categorie.idCategoria
+    JOIN preferiti ON preferiti.idPercorso = percorsi.idPercorso
+    WHERE preferiti.idUtente = ?
+    ORDER BY preferiti.dataSalvataggio DESC
 ");
 $stmt->execute([$_SESSION['idUtente']]);
 $percorsiSalvati = $stmt->fetchAll(PDO::FETCH_ASSOC);
