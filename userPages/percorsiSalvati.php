@@ -48,10 +48,11 @@ $percorsiSalvati = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h1 class="mb-4">I miei percorsi salvati</h1>
 
     <?php if (empty($percorsiSalvati)): ?>
-        <div class="alert alert-info">
-            <h5>Non hai ancora salvato nessun percorso.</h5>
-            <p><a href="home.php" class="btn btn-primary">Vai al Simulatore</a> per scoprire nuovi percorsi!</p>
-        </div>
+       <div class="alert alert-info">
+     <h5>Non hai ancora salvato nessun percorso.</h5>
+        <p>Vai al Simulatore per scoprire nuovi percorsi!</p>
+        <a href="home.php" class="btn btn-primary">Vai al Simulatore</a>
+</div>
     <?php else: ?>
         <div class="row">
             <?php foreach ($percorsiSalvati as $percorso): ?>
