@@ -15,8 +15,8 @@
         "bacheca.php",
         "chat.php",
         "messaggi.php",
-        "profilo.php",
-        "profilo_pubblico.php"
+        "profilo.php"
+
     ],
     "DBPages": [
         "home.php", 
@@ -25,7 +25,6 @@
         "registrazione.php",
         "chat.php",
         "messaggi.php",
-        "profilo.php",
-        "profilo_pubblico.php"
+        "profilo.php"
     ]
 }
