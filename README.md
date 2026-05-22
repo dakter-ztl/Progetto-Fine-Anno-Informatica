@@ -19,7 +19,7 @@ Al primo accesso al sito, lo studente visualizza un menu (`menuChoice.php`) real
 
 ### **MODALITÀ CON LOGIN**
 Una volta effettuato l'accesso, vengono sbloccate le funzionalità avanzate:
-* **Nella pagina:** `dettagliPercorso.php`, un utente loggato ha inoltre la possibilita di salvare un percorso preferito schiacciando il pulsante **Salva Percorso**. Un utente puo vedere e gestire (eliminare e verificare i dettagli) i percorsi preferiti entrando sulla voce **Percorsi Preferiti** nel `menuChoice.php`.   
+* **Nella pagina:** `dettagliPercorso.php`, un utente loggato ha inoltre la possibilita di salvare un percorso preferito schiacciando il pulsante **Salva Percorso**. Un utente puo vedere e gestire (eliminare e verificare i dettagli) dei percorsi preferiti entrando sulla voce **Percorsi Preferiti** nel `menuChoice.php`.   
 * **Bacheca:** L'utente può pubblicare un massimo di 4 annunci, rispondere agli altri post nella sezione commenti e recensire le risposte degli altri utenti tramite il pulsante **"Valuta"**.
 * **Sistema di Valutazione:** Cliccando su "Valuta", l'utente accede a `recensioni.php` dove deve inserire un voto (da 1 a 10) e una motivazione della scelta. In base al voto, il punteggio di affidabilità dell'utente valutato aumenta di **3 punti** (voto $\ge$ 5) o diminuisce di **2 punti** (voto < 5).
 * **Profili e Chat:** Cliccando sul nome di un utente in bacheca, si viene indirizzati a `visualizzaProfilo.php`, dove sono visibili il nome e il punteggio di affidabilità. Il pulsante **"Contatta"** apre `chat.php`, una chat effettiva che permette di inviare e cancellare messaggi.
