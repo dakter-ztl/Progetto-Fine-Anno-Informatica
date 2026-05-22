@@ -1,8 +1,9 @@
 <?php
 session_start();
+    require_once '../include/userMenu.php';
 
 if(isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 'admin'){
-    require_once __DIR__ . '/menuChoice.php';
+    require_once '../include/menuChoice.php';
     exit;
 }
 ?>
@@ -26,48 +27,45 @@ if(isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 'admin'){
     <div class="row justify-content-center">
         
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100 border-0 hover-effect">
-                <div class="card-body text-center p-5 d-flex flex-column">
-                    <div class="display-1 mb-3">📚</div>
-                    <h2 class="card-title">Inserisci Materie</h2>
-                    <p class="card-text text-muted">
-                        Aggiungi nuove materie scolastiche al database per migliorare l'algoritmo di matching.
-                    </p>
-                    <a href="../adminPages/inserisciMateria.php" class="btn btn-primary btn-lg mt-auto w-100">
-                        Vai a Gestione Materie
-                    </a>
+            <a href="../adminPages/inserisciMateria.php" class="text-decoration-none">
+                <div class="card shadow-sm h-100 border-0 hover-effect clickable-card">
+                    <div class="card-body text-center p-5">
+                        <div class="display-1 mb-3">📚</div>
+                        <h2 class="card-title">Inserisci Materie</h2>
+                        <p class="card-text text-muted">
+                            Aggiungi nuove materie scolastiche al database per migliorare l'algoritmo di matching.
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100 border-0 hover-effect">
-                <div class="card-body text-center p-5 d-flex flex-column">
-                    <div class="display-1 mb-3">🚀</div>
-                    <h2 class="card-title">Inserisci Percorsi</h2>
-                    <p class="card-text text-muted">
-                        Crea nuove schede per Università, Lavori o Corsi ITS con i relativi dati economici.
-                    </p>
-                    <a href="../adminPages/inserisciPercorso.php" class="btn btn-success btn-lg mt-auto w-100">
-                        Vai a Gestione Percorsi
-                    </a>
+            <a href="../adminPages/inserisciPercorso.php" class="text-decoration-none">
+                <div class="card shadow-sm h-100 border-0 hover-effect clickable-card">
+                    <div class="card-body text-center p-5">
+                        <div class="display-1 mb-3">🚀</div>
+                        <h2 class="card-title">Inserisci Percorsi</h2>
+                        <p class="card-text text-muted">
+                            Crea nuove schede per Università, Lavori o Corsi ITS con i relativi dati economici.
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100 border-0 hover-effect">
-                <div class="card-body text-center p-5 d-flex flex-column">
-                    <div class="display-1 mb-3">⭐</div>
-                    <h2 class="card-title">Gestisci Recensioni</h2>
-                    <p class="card-text text-muted">
-                        Approva o rifiuta le recensioni degli utenti per mantenere la qualità del sistema.
-                    </p>
-                    <a href="../adminPages/gestisciRecensioni.php" class="btn btn-warning btn-lg mt-auto w-100">
-                        Vai a Gestione Recensioni
-                    </a>
+            <a href="../adminPages/gestisciRecensioni.php" class="text-decoration-none">
+                <div class="card shadow-sm h-100 border-0 hover-effect clickable-card">
+                    <div class="card-body text-center p-5">
+                        <div class="display-1 mb-3">⭐</div>
+                        <h2 class="card-title">Gestisci Recensioni</h2>
+                        <p class="card-text text-muted">
+                            Approva o rifiuta le recensioni degli utenti per mantenere la qualità del sistema.
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         
     </div> <!-- Chiusura row -->
@@ -75,10 +73,18 @@ if(isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 'admin'){
 </div> <!-- Chiusura container -->
 
 <style>
+    .clickable-card {
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
     .hover-effect:hover {
         transform: translateY(-5px);
-        transition: transform 0.3s ease;
         box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    }
+    
+    .clickable-card .card-title {
+        color: #212529;
     }
 </style>
 

@@ -1,5 +1,5 @@
 <?php
-$json = file_get_contents('../include/pages.json');
+$json = file_get_contents(__DIR__ . '/pages.json');
 $pageName = basename($_SERVER['PHP_SELF']);
 $obj = json_decode($json);
 
@@ -11,15 +11,17 @@ if(in_array($pageName, $obj->DBPages)){
 }
 
 // Determina se siamo in un contesto admin
-$isAdminContext = in_array($pageName, $obj->adminpages);
+$isAdminContext = in_array($pageName, $obj->adminPages);
 
+// Imposta il prefisso del percorso in base al contesto
 if($isAdminContext){
-    // Siamo in una pagina admin, quindi i link verso userPages devono risalire
+    // Siamo in una pagina admin (include/ o adminPages/)
     $GLOBALS['menuPathPrefix'] = '../userPages/';
-    require 'adminMenu.php';
 } else {
-    // Siamo in una pagina user normale, quindi i link sono relativi alla stessa directory
+    // Siamo in una pagina user normale
     $GLOBALS['menuPathPrefix'] = './';
-    include 'userMenu.php';
 }
+
+// Includi sempre userMenu.php (che ora userà il prefisso corretto)
+include __DIR__ . '/userMenu.php';
 ?>

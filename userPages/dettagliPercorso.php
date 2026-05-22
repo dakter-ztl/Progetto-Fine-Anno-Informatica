@@ -11,7 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once '../include/DBHandler.php';
-include '../include/menuChoice.php';
+
 
 
 if (!isset($_GET['idPercorso']) || !is_numeric($_GET['idPercorso'])) {
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     header("Location: " . $_SERVER['REQUEST_URI']);
     exit();
 }
-
+include '../include/menuChoice.php';
 $stmt = $db->prepare("
     SELECT p.*, c.nomeCategoria
     FROM percorsi p
@@ -175,20 +175,19 @@ $stelle = str_repeat('⭐', $percorso['difficolta']) . str_repeat('☆', 5 - $pe
     </div>
     <?php endif; ?>
 
-   
-    <div class="d-flex gap-2">
-        <a href="home.php" class="btn btn-outline-secondary">← Torna al Simulatore</a>
-        <?php if (isset($_SESSION['idUtente'])): ?>
-            <a href="bacheca.php" class="btn btn-primary">Vai alla Bacheca</a>
-            <?php if (!$isSaved): ?>
-                <form method="post" style="display:inline;">
-                    <button type="submit" name="save" value="1" class="btn btn-success">Salva percorso</button>
-                </form>
-            <?php else: ?>
-                <span class="text-success fw-bold">Percorso salvato nei preferiti</span>
-            <?php endif; ?>
+ <div class="d-flex gap-2 align-items-center">
+    <a href="home.php" class="btn btn-outline-secondary">← Torna al Simulatore</a>
+    <?php if (isset($_SESSION['idUtente'])): ?>
+        <a href="bacheca.php" class="btn btn-primary">Vai alla Bacheca</a>
+        <?php if (!$isSaved): ?>
+            <form method="post" class="m-0 d-inline">
+                <button type="submit" name="save" value="1" class="btn btn-success">Salva percorso</button>
+            </form>
+        <?php else: ?>
+            <div class="bg-success text-white px-3 py-2 rounded small" style="line-height: 1.5;">Percorso salvato</div>
         <?php endif; ?>
-    </div>
+    <?php endif; ?>
+</div>
 
 
 </div>
