@@ -42,15 +42,24 @@ if (isset($_POST['delete_type'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'nuovo_annuncio') {
-    $sql = "CALL publicaAnnuncio(:uid, :tit, :test)";
-    $stmt = DBHandler::getPDO()->prepare($sql);
-    $stmt->execute([
-        ':tit' => $_POST['titolo'], 
-        ':test' => $_POST['testo'], 
-        ':uid' => $myId
-    ]);
-    header("Location: bacheca.php"); 
-    exit;
+    try {
+        $sql = "CALL publicaAnnuncio(:uid, :tit, :test)";
+        $stmt = DBHandler::getPDO()->prepare($sql);
+        $stmt->execute([
+            ':tit' => $_POST['titolo'], 
+            ':test' => $_POST['testo'], 
+            ':uid' => $myId
+        ]);
+        header("Location: bacheca.php");
+        exit;
+    } catch (PDOException $e) {
+        $errore = $e->getMessage();
+        if (preg_match('/1644 (.+)$/', $errore, $matches)) {
+            $erroreForm = $matches[1];
+        } else {
+            $erroreForm = "Errore durante la pubblicazione.";
+        }
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['azione'] == 'toggle_stato' && $isAdmin) {
@@ -59,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['azione']) && $_POST['a
 
     $sql = "UPDATE annunci SET stato = :stato WHERE idAnnuncio = :id";
     $stmt = DBHandler::getPDO()->prepare($sql);
-    $stmt->execute([':stato' => $nuovoStato, ':id' => $idAnnuncio]); // Ora riceverà 'aperto' o 'chiuso'
+    $stmt->execute([':stato' => $nuovoStato, ':id' => $idAnnuncio]);
     header("Location: bacheca.php");
     exit;
 }
@@ -99,6 +108,11 @@ include '../include/menuChoice.php';
     <div class="card mb-5 shadow-sm bg-light border-0">
         <div class="card-body">
             <h5 class="text-primary mb-3">Scrivi un annuncio</h5>
+
+            <?php if (isset($erroreForm)): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($erroreForm) ?></div>
+            <?php endif; ?>
+
             <form method="POST" action="bacheca.php">
                 <input type="hidden" name="azione" value="nuovo_annuncio">
                 <div class="mb-2">
@@ -208,22 +222,20 @@ include '../include/menuChoice.php';
                             </div>
                             
                             <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex align-items-center gap-2">
-                                    <?php if (!$isMiaRisp): ?>
-                                        <form method="POST" action="recensioni.php" class="m-0">
-                                            <input type="hidden" name="idRisposta" value="<?= $risp['idRisposta'] ?>">
-                                            <button type="submit" class="btn btn-secondary btn-sm">Valuta risposta</button>
-                                        </form>
-                                    <?php endif; ?>
+                                <?php if (!$isMiaRisp): ?>
+                                    <form method="POST" action="recensioni.php" class="m-0">
+                                        <input type="hidden" name="idRisposta" value="<?= $risp['idRisposta'] ?>">
+                                        <button type="submit" class="btn btn-secondary btn-sm">Valuta risposta</button>
+                                    </form>
+                                <?php endif; ?>
 
-                                    <?php if ($isMiaRisp || $isAdmin): ?>
-                                        <form method="POST" class="m-0">
-                                            <input type="hidden" name="delete_type" value="risposta">
-                                            <input type="hidden" name="delete_id" value="<?= $risp['idRisposta'] ?>">
-                                            <button class="btn btn-sm text-danger border-0 p-0 fw-bold">✕</button>
-                                        </form>
-                                    <?php endif; ?>
-                                </div>
+                                <?php if ($isMiaRisp || $isAdmin): ?>
+                                    <form method="POST" class="m-0">
+                                        <input type="hidden" name="delete_type" value="risposta">
+                                        <input type="hidden" name="delete_id" value="<?= $risp['idRisposta'] ?>">
+                                        <button class="btn btn-sm text-danger border-0 p-0 fw-bold">✕</button>
+                                    </form>
+                                <?php endif; ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
