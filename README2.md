@@ -294,14 +294,14 @@ CREATE TABLE preferiti(
 ```
 utenti (1) ──── pubblica ──── (N) annunci
 utenti (1) ──── scrive ──── (N) risposte
-utenti (1) ──── invia/riceve ──── (N) messaggi_privati
+utenti (1) ──── invia/riceve ──── (N) messaggi
 utenti (1) ──── riceve ──── (N) notifiche
 utenti (1) ──── salva ──── (N) preferiti
 utenti (1) ──── valuta ──── (N) recensioni (M:N con utenti)
 
 categorie (1) ──── contiene ──── (N) percorsi
 percorsi (1) ──── ha ──── (1) dettagliPercorsi
-percorsi (M) ──── include ──── (N) materie [via percorsi_materie]
+percorsi (M) ──── include ──── (N) materie [via percorsiMaterie]
 
 annunci (1) ──── riceve ──── (N) risposte
 preferiti (M) ──── collega ──── (N) percorsi e utenti

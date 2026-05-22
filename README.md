@@ -4,7 +4,7 @@
 ## Titolo progetto: Next Step
 
 
-Il progetto consiste in un portale web di simulazione e orientamento post-diploma. Si tratta di un motore di ricerca intelligente che permette agli utenti (studenti) di trovare percorsi di studio, universitari o lavorativi inserendo filtri concreti come budget mensile disponibile, materie di interesse, difficoltà (da 1 a 5) e la città desiderata del percorso. Il sito offre funzionalità di confronto diretto tra i percorsi e include una sezione "Bacheca" interattiva: qui gli utenti registrati possono pubblicare annunci (offerte di lavoro entry-level, richieste info, ricerca alloggi),visuallizare altri profili da dove si possono inviare messaggi privati e rispondere agli annunci esistenti. Il sistema prevede un'area pubblica per la ricerca, un'area riservata accessibile tramite login per la gestione del profilo e la pubblicazione degli annunci e un'area admin per gli amministratori che prevede un pannello di controllo aggiuntivo.
+Il progetto consiste in un portale web di simulazione e orientamento post-diploma. Si tratta di un motore di ricerca intelligente che permette agli utenti di trovare percorsi di studio, universitari o lavorativi inserendo filtri concreti come budget mensile disponibile, materie di interesse, difficoltà (da 1 a 5) e la città desiderata del percorso. Il sito offre funzionalità di confronto diretto tra i percorsi e include una sezione "Bacheca" interattiva: qui gli utenti registrati possono pubblicare annunci (offerte di lavoro entry-level, richieste info, ricerca alloggi), visualizzare altri profili da dove si possono inviare messaggi privati e rispondere agli annunci esistenti. Il sistema prevede un'area pubblica per la ricerca, un'area riservata accessibile tramite login per la gestione del profilo e la pubblicazione degli annunci e un'area admin per gli amministratori che prevede un pannello di controllo aggiuntivo dove si possono inserire materie e percorsi e gestire le recensioni degli utenti in bacheca.
 
 
 ## Descrizione approfondita passo per passo del progetto Next Step
@@ -12,28 +12,47 @@ Il progetto consiste in un portale web di simulazione e orientamento post-diplom
 ### **MODALITÀ SENZA LOGIN**
 Al primo accesso al sito, lo studente visualizza un menu (`menuChoice.php`) realizzato con Bootstrap, dove può selezionare il **Simulatore**, la **Bacheca** o il **Login** (posizionato a destra). 
 
-* **Simulatore:** Selezionando il Simulatore (o di default all'apertura del sito), l’utente viene indirizzato sulla homepage (`userPages/home.php`). Qui può impostare diversi filtri: materie di interesse, budget massimo mensile, città e difficoltà desiderata. 
-* **Ricerca:** Cliccando sul pulsante **"Consigliami"**, parte la ricerca del percorso che rispetta i filtri impostati. I risultati vengono mostrati tramite card che riportano titolo, una breve descrizione, la città e il costo medio mensile.
-* **Dettagli:** Cliccando sul pulsante **"Dettagli"**, l’utente viene indirizzato alla pagina `dettagliPercorso.php`, contenente l'indirizzo dell'istituto (Università, ITS o lavoro), il numero di telefono, gli orari di accoglienza, una descrizione approfondita, il breakdown del budget e un link URL al percorso originale.
-* **Bacheca e Sicurezza:** Se un utente non loggato prova ad accedere alla Bacheca, viene reindirizzato alla pagina di login. Il sistema prevede un massimo di **5 tentativi di login ogni 2 minuti** per prevenire lo spam. Se l'utente non possiede un account, può crearlo tramite il pulsante **"Registrati qui"**.
+* **Simulatore:** Selezionando il Simulatore (o di default all'apertura del sito), l’utente viene indirizzato sulla homepage (`userPages/home.php`). Qui può impostare diversi filtri: materie di interesse (scrivendo nella barra realizzata con javascript oppure selezionando le materie con il puntatore), budget massimo mensile, città e difficoltà desiderata. 
+* **Ricerca:** Cliccando sul pulsante **"Consigliami"**, parte la ricerca del percorso che rispetta i filtri impostati. I risultati vengono mostrati tramite card che riportano titolo, una breve descrizione, la città, il costo medio mensile e il pulsante dettagli.
+* **Dettagli:** Cliccando sul pulsante **"Dettagli"**, l’utente viene indirizzato alla pagina `dettagliPercorso.php`, contenente l'indirizzo fisico della struttura (Università, ITS o lavoro), il numero di telefono, gli orari di accoglienza, una descrizione approfondita, il breakdown del budget e un link URL al sito web originale.
+* **Bacheca e Sicurezza:** Se un utente non loggato prova ad accedere alla Bacheca, viene reindirizzato alla pagina di login. Se l'utente non possiede un account, può crearlo tramite il pulsante **"Registrati qui"**.
 
 ### **MODALITÀ CON LOGIN**
 Una volta effettuato l'accesso, vengono sbloccate le funzionalità avanzate:
 
 * **Bacheca:** L'utente può pubblicare un massimo di 4 annunci, rispondere agli altri post nella sezione commenti e recensire le risposte degli altri utenti tramite il pulsante **"Valuta"**.
-* **Sistema di Valutazione:** Cliccando su "Valuta", l'utente accede a `recensioni.php` dove deve inserire un voto (da 1 a 10) e una motivazione. In base al voto, il punteggio di affidabilità dell'utente valutato aumenta di **3 punti** (voto $\ge$ 5) o diminuisce di **2 punti** (voto < 5).
+* **Sistema di Valutazione:** Cliccando su "Valuta", l'utente accede a `recensioni.php` dove deve inserire un voto (da 1 a 10) e una motivazione della scelta. In base al voto, il punteggio di affidabilità dell'utente valutato aumenta di **3 punti** (voto $\ge$ 5) o diminuisce di **2 punti** (voto < 5).
 * **Profili e Chat:** Cliccando sul nome di un utente in bacheca, si viene indirizzati a `visualizzaProfilo.php`, dove sono visibili il nome e il punteggio di affidabilità. Il pulsante **"Contatta"** apre `chat.php`, una chat effettiva che permette di inviare e cancellare messaggi.
-* **Il Mio Profilo:** Nel menu appare la voce `profilo.php`, dove l'utente può visualizzare i propri post recenti, le notifiche (risposte ai post in bacheca) e accedere alla sezione **"Vai ai messaggi privati"** (`messaggi.php`) per consultare lo storico delle chat. È presente inoltre il tasto **Logout** per distruggere la sessione.
+* **Il Mio Profilo:** Schiacciando sul proprio nome utente si viene indirizzati a `profilo.php`, dove l'utente può visualizzare i propri post recenti, le notifiche (risposte ai post in bacheca e messaggi) e accedere alla sezione **"Vai ai messaggi privati"** (`messaggi.php`) per consultare lo storico delle chat. È presente inoltre il tasto **Logout** per distruggere la sessione.
 
 ### **MODALITÀ ADMIN**
 Gli utenti con privilegi admin visualizzano nel menu la voce **"Modalità ADMIN"**, che reindirizza ad `adminMenu.php`. Questo pannello di controllo presenta due sezioni principali per l'aggiornamento del database:
 
 1.  **Gestione Materie (`inserisciMaterie.php`):** Permette di aggiungere una nuova materia inserendone il nome e salvandola nel database.
 2.  **Gestione Percorsi (`inserisciPercorsi.php`):** Permette di creare un nuovo percorso inserendo Titolo, Categoria (selezionabile tra **ITS, Università o Lavoro**), descrizione, costo medio mensile, città, difficoltà e la lista delle materie collegate.
-* **Moderazione:** Gli amministratori hanno la facoltà di eliminare gli annunci e i commenti di tutti gli utenti per garantire la corretta convivenza sulla piattaforma.
+* **Gestione recensioni:(`gestisciRecensioni.php`)** Gli amministratori hanno la facoltà di controllare le recensioni dei commenti di tutti gli utenti per garantire una corretta funzionalita del sistema di punteggio.
 
 
 Link del sito: https://prontonextstep.it
+
+
+### Diagramma delle relazioni delle tabelle del database
+
+```
+utenti (1) ──── pubblica ──── (N) annunci
+utenti (1) ──── scrive ──── (N) risposte
+utenti (1) ──── invia/riceve ──── (N) messaggi
+utenti (1) ──── riceve ──── (N) notifiche
+utenti (1) ──── salva ──── (N) preferiti
+utenti (1) ──── valuta ──── (N) recensioni (M:N con utenti)
+
+categorie (1) ──── contiene ──── (N) percorsi
+percorsi (1) ──── ha ──── (1) dettagliPercorsi
+percorsi (M) ──── include ──── (N) materie [via percorsiMaterie]
+
+annunci (1) ──── riceve ──── (N) risposte
+preferiti (M) ──── collega ──── (N) percorsi e utenti
+```
 
 * **STRUTTURA DATABASE:**
 
@@ -254,7 +273,7 @@ ____________________________________________________________
 <img width="1877" height="955" alt="es dettaglipercoros" src="https://github.com/user-attachments/assets/382f7f49-53e4-4c1b-8d07-c57001a8631b" />
 
 ### **Esempio di ricerca a vuoto senza filtri**
-<img width="1877" height="959" alt="ricercasimtuttipercorsi" src="https://github.com/user-attachments/assets/415ec81b-6b5b-4cd9-bdee-0f7c32eee97f" />
+<img width="1877" height="959" alt="ricercasimtuttipercorsi" src="https://github.com/user-attachments/assets415ec81b-6b5b-4cd9-bdee-0f7c32eee97f" />
 
 ### **Home avendo fatto l'accesso**
 
@@ -305,3 +324,10 @@ ____________________________________________________________
 <img width="1877" height="956" alt="aggiuntmaterie" src="https://github.com/user-attachments/assets/2feae5a9-d11f-41cf-85c6-afb9160c2e86" />
 
 
+
+Questo progetto è stato sviluppato come progetto scolastico di fine anno in Informatica.
+
+**Autore:** Mereuta Victor - Classe 5IE  
+**Anno Scolastico:** 2025/2026
+
+---
