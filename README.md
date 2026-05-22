@@ -35,24 +35,6 @@ Gli utenti con privilegi admin visualizzano nel menu la voce **"Modalità ADMIN"
 
 Link del sito: https://prontonextstep.it
 
-
-### Diagramma delle relazioni delle tabelle del database
-
-```
-utenti (1) ──── pubblica ──── (N) annunci
-utenti (1) ──── scrive ──── (N) risposte
-utenti (1) ──── invia/riceve ──── (N) messaggi
-utenti (1) ──── riceve ──── (N) notifiche
-utenti (1) ──── salva ──── (N) preferiti
-utenti (1) ──── valuta ──── (N) recensioni (M:N con utenti)
-
-categorie (1) ──── contiene ──── (N) percorsi
-percorsi (1) ──── ha ──── (1) dettagliPercorsi
-percorsi (M) ──── include ──── (N) materie [via percorsiMaterie]
-
-annunci (1) ──── riceve ──── (N) risposte
-preferiti (M) ──── collega ──── (N) percorsi e utenti
-```
 ## Schema del Database
 
 <img width="1421" height="897" alt="image" src="https://github.com/user-attachments/assets/64c114cb-48bf-48f4-98e1-f054a650bfb1" />
