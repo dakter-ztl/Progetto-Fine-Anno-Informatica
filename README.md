@@ -55,8 +55,8 @@ preferiti (M) ──── collega ──── (N) percorsi e utenti
 ```
 ## Schema del Database
 
-![Diagramma ER](<img width="1421" height="897" alt="image" src="https://github.com/user-attachments/assets/64c114cb-48bf-48f4-98e1-f054a650bfb1" />
-)
+<img width="1421" height="897" alt="image" src="https://github.com/user-attachments/assets/64c114cb-48bf-48f4-98e1-f054a650bfb1" />
+
 
 ### Entità principali
 - **Utenti** — studenti e admin, con punteggio affidabilità
