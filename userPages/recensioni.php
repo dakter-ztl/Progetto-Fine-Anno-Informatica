@@ -39,17 +39,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = "CALL valutaRisposta(:idUtente, :idRisposta, :voto, :commento)";
             $sth = DBHandler::getPDO()->prepare($sql);
             $sth->execute([
-                ':idUtente'  => $myId,
+                ':idUtente'   => $myId,
                 ':idRisposta' => $idRisposta,
-                ':voto'      => $voto,
-                ':commento'  => $commento,
+                ':voto'       => $voto,
+                ':commento'   => $commento,
             ]);
 
             $messaggioEsito = "Recensione inviata! Verrà approvata da un amministratore prima di essere valida.";
             $salvato = true;
 
         } catch (PDOException $e) {
-            $messaggioEsito = "Errore: " . $e->getMessage();
+            $errore = $e->getMessage();
+            if (preg_match('/1644 (.+)$/', $errore, $matches)) {
+                $messaggioEsito = $matches[1];
+            } else {
+                $messaggioEsito = "Errore durante l'invio della recensione.";
+            }
         }
     }
 }
@@ -70,10 +75,12 @@ include '../include/menuChoice.php';
     <div class="card shadow p-4">
 
         <?php if (!empty($messaggioEsito)): ?>
-            <div class="alert alert-info"><?= htmlspecialchars($messaggioEsito) ?></div>
+            <div class="alert <?= $salvato ? 'alert-success' : 'alert-danger' ?>">
+                <?= htmlspecialchars($messaggioEsito) ?>
+            </div>
         <?php endif; ?>
 
-        <?php if ($showForm): ?>
+        <?php if ($showForm && !$salvato): ?>
         <h5 class="mb-4">Lascia una recensione</h5>
         <form method="POST" action="recensioni.php">
             <input type="hidden" name="idRisposta" value="<?= htmlspecialchars($idRisposta) ?>">

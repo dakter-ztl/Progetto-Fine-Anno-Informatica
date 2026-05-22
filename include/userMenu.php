@@ -23,9 +23,7 @@
         </li>
         
         <?php if(isset($_SESSION['idUtente'])): ?>
-            <li class="nav-item">
-              <a class="nav-link text-warning fw-bold" href="<?php echo $GLOBALS['menuPathPrefix']; ?>profilo.php">Il mio profilo</a>
-            </li>
+           
             <li class="nav-item">
               <a class="nav-link" href="<?php echo $GLOBALS['menuPathPrefix']; ?>percorsiSalvati.php">Percorsi salvati</a>
             </li>
@@ -45,9 +43,7 @@
         <li class="nav-item">
             <a class="nav-link text-warning fw-bold" href="<?php echo $GLOBALS['menuPathPrefix']; ?>profilo.php"><?= htmlspecialchars($_SESSION['nomeUtente']); ?></a>
         </li>
-        <li class="nav-item">
-            <a class="btn btn-warning btn-sm" href="../include/logout.php">Logout</a>
-        </li>
+
         <?php else: ?>
         <li class="nav-item">
             <a class="btn btn-outline-light btn-sm" href="../include/loginForm.php">Accedi</a>
@@ -57,3 +53,5 @@
     </div>
   </div>
 </nav>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> //  Aggiunta del JS di Bootstrap per il funzionamento del menu a tendina

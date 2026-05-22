@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nomeMateria'])) {
 
 
 ?>
+<link href="../css/style.css" rel="stylesheet">
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
