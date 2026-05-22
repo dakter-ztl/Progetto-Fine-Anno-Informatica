@@ -53,7 +53,22 @@ percorsi (M) ──── include ──── (N) materie [via percorsiMaterie]
 annunci (1) ──── riceve ──── (N) risposte
 preferiti (M) ──── collega ──── (N) percorsi e utenti
 ```
+## Schema del Database
 
+![Diagramma ER](<img width="1421" height="897" alt="image" src="https://github.com/user-attachments/assets/64c114cb-48bf-48f4-98e1-f054a650bfb1" />
+)
+
+### Entità principali
+- **Utenti** — studenti e admin, con punteggio affidabilità
+- **Percorsi** — corsi/università filtrabili per materia, città, budget, difficoltà
+- **Categorie** — tipo di percorso (università, ITS, lavoro, ecc.)
+- **Materie** — collegano utenti ai percorsi tramite interessi
+- **Annunci** — post nella bacheca (max 4 attivi per utente)
+- **Risposte** — commenti agli annunci
+- **Recensioni** — valutazioni delle risposte (1-10), aggiornano il punteggio affidabilità
+- **Preferiti** — percorsi salvati dall'utente
+- **Notifiche** — avvisi automatici (es. qualcuno ha commentato il tuo post)
+- **Messaggi** — messaggi privati tra utenti
 * **STRUTTURA DATABASE:**
 
 ```sql
