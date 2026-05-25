@@ -35,25 +35,22 @@ Gli utenti con privilegi admin visualizzano nel menu la voce **"Modalità ADMIN"
 
 Link del sito: https://prontonextstep.it
 
+## Schema del Database
 
-### Diagramma delle relazioni delle tabelle del database
+<img width="1421" height="897" alt="image" src="https://github.com/user-attachments/assets/64c114cb-48bf-48f4-98e1-f054a650bfb1" />
 
-```
-utenti (1) ──── pubblica ──── (N) annunci
-utenti (1) ──── scrive ──── (N) risposte
-utenti (1) ──── invia/riceve ──── (N) messaggi
-utenti (1) ──── riceve ──── (N) notifiche
-utenti (1) ──── salva ──── (N) preferiti
-utenti (1) ──── valuta ──── (N) recensioni (M:N con utenti)
 
-categorie (1) ──── contiene ──── (N) percorsi
-percorsi (1) ──── ha ──── (1) dettagliPercorsi
-percorsi (M) ──── include ──── (N) materie [via percorsiMaterie]
-
-annunci (1) ──── riceve ──── (N) risposte
-preferiti (M) ──── collega ──── (N) percorsi e utenti
-```
-
+### Entità principali
+- **Utenti** — studenti e admin, con punteggio affidabilità
+- **Percorsi** — corsi/università filtrabili per materia, città, budget, difficoltà
+- **Categorie** — tipo di percorso (università, ITS, lavoro, ecc.)
+- **Materie** — collegano utenti ai percorsi tramite interessi
+- **Annunci** — post nella bacheca (max 4 attivi per utente)
+- **Risposte** — commenti agli annunci
+- **Recensioni** — valutazioni delle risposte (1-10), aggiornano il punteggio affidabilità
+- **Preferiti** — percorsi salvati dall'utente
+- **Notifiche** — avvisi automatici (es. qualcuno ha commentato il tuo post)
+- **Messaggi** — messaggi privati tra utenti
 * **STRUTTURA DATABASE:**
 
 ```sql
@@ -257,73 +254,6 @@ END //
 
 DELIMITER ;
 ```
-### **Screenshot**
-____________________________________________________________
-
-### **Home senza aver fatto l'accesso**
-
-<img width="1876" height="991" alt="simsenzalogin" src="https://github.com/user-attachments/assets/79b5fa36-2d24-4a14-986f-d12fcb6a61d1" />
-
-### **Esempio di ricerca sul simulatore senza login**
-
-<img width="1877" height="952" alt="esricercasimsenzalogin" src="https://github.com/user-attachments/assets/c83dde43-6bcb-4af6-bb25-84fe98c69af1" />
-
-### **Dettagli del percorso**
-
-<img width="1877" height="955" alt="es dettaglipercoros" src="https://github.com/user-attachments/assets/382f7f49-53e4-4c1b-8d07-c57001a8631b" />
-
-### **Esempio di ricerca a vuoto senza filtri**
-<img width="1877" height="959" alt="ricercasimtuttipercorsi" src="https://github.com/user-attachments/assets415ec81b-6b5b-4cd9-bdee-0f7c32eee97f" />
-
-### **Home avendo fatto l'accesso**
-
-<img width="1877" height="954" alt="homeconlogin" src="https://github.com/user-attachments/assets/36601512-5ba1-4695-b605-dfad50bdf3c2" />
-
-### **Bacheca**
-
-<img width="1878" height="955" alt="bacheca" src="https://github.com/user-attachments/assets/1b0c5838-2e7e-445b-bb65-d54d8a34cc5a" />
-
-### **Valuta un commento in bacheca**
-
-<img width="1877" height="957" alt="valutacommento" src="https://github.com/user-attachments/assets/031fd40a-934f-4750-ae87-c5f5ba4da06e" />
-
-### **Visualizza un profilo schiacciando sul nome in bacheca**
-
-<img width="1878" height="956" alt="visualizzaprofi" src="https://github.com/user-attachments/assets/d7711a86-5ce3-49af-84a3-2cec43a5174d" />
-
-### **Il tuo profilo dove si trovano notifiche etc**
-
-<img width="1877" height="992" alt="iltuoprofilo" src="https://github.com/user-attachments/assets/2a958498-a99c-45a4-a4d3-cbfdcaa25f3f" />
-
-### **Le tue conversazioni**
-
-<img width="1877" height="960" alt="letueconversazioni" src="https://github.com/user-attachments/assets/6fe18dcf-dc32-445b-9f7f-d44d8c6bfc7b" />
-
-### **Esempio chat banale**
-
-<img width="1880" height="957" alt="chat" src="https://github.com/user-attachments/assets/3a42e857-d3a1-4166-b39f-fd577920fbc8" />
-
-### **Home con accesso admin (privilegi elevati)**
-
-<img width="1877" height="957" alt="homeadmin" src="https://github.com/user-attachments/assets/fd7274b6-f1cb-4832-9197-91da7f05ee6c" />
-
-### **Bacheca admin**
-
-<img width="1875" height="957" alt="bachechaadmin" src="https://github.com/user-attachments/assets/2db9a8f3-b739-4412-9f41-d10e81e43b74" />
-
-### **Panello di controllo admin**
-
-<img width="1877" height="957" alt="pannellodiconytrollo" src="https://github.com/user-attachments/assets/4703202a-f2a9-48bd-871a-8f929ff47cb0" />
-
-### **Sezione aggiunta percorsi**
-
-<img width="1876" height="955" alt="aggiuntapercorsi" src="https://github.com/user-attachments/assets/24585958-1153-45d0-a8e9-9962aceb6bb4" />
-
-### **Sezione aggiunta materie**
-
-<img width="1877" height="956" alt="aggiuntmaterie" src="https://github.com/user-attachments/assets/2feae5a9-d11f-41cf-85c6-afb9160c2e86" />
-
-
 
 Questo progetto è stato sviluppato come progetto scolastico di fine anno in Informatica.
 
